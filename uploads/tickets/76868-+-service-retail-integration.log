@@ -1,0 +1,150 @@
+2019-10-04 17:43:01 [main] INFO 	c.c.s.r.i.b.RetailIntegrationApplication-[StartupInfoLogger.java:48]-Starting RetailIntegrationApplication v0.0.1 on DC-UAT-ADM1 with PID 6692 (C:\AUTO_LOAN_RETAIL_PSB_version_3.1\version_3.0.1\Deployment\service-retail-integration-0.0.1.jar started by dc_canadmin in C:\AUTO_LOAN_RETAIL_PSB_version_3.1\version_3.0.1\Deployment)
+2019-10-04 17:43:01 [main] INFO 	c.c.s.r.i.b.RetailIntegrationApplication-[SpringApplication.java:637]-No active profile set, falling back to default profiles: default
+2019-10-04 17:43:01 [main] INFO 	o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext-[AbstractApplicationContext.java:582]-Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@73a8dfcc: startup date [Fri Oct 04 17:43:01 IST 2019]; root of context hierarchy
+2019-10-04 17:43:09 [background-preinit] INFO 	o.h.validator.internal.util.Version-[Version.java:30]-HV000001: Hibernate Validator 5.3.4.Final
+2019-10-04 17:44:09 [main] INFO 	o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker-[PostProcessorRegistrationDelegate.java:325]-Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$f33fd062] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-04 17:44:09 [main] INFO 	o.s.w.s.a.s.AnnotationActionEndpointMapping-[AbstractAddressingEndpointMapping.java:236]-Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2019-10-04 17:44:09 [main] INFO 	o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker-[PostProcessorRegistrationDelegate.java:325]-Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$4ea80b63] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-04 17:44:14 [main] INFO 	o.s.b.c.e.t.TomcatEmbeddedServletContainer-[TomcatEmbeddedServletContainer.java:89]-Tomcat initialized with port(s): 8287 (http)
+2019-10-04 17:44:14 [main] INFO 	o.a.catalina.core.StandardService-[DirectJDKLog.java:179]-Starting service Tomcat
+2019-10-04 17:44:14 [main] INFO 	o.a.catalina.core.StandardEngine-[DirectJDKLog.java:179]-Starting Servlet Engine: Apache Tomcat/8.5.11
+2019-10-04 17:44:15 [localhost-startStop-1] INFO 	o.a.c.c.C.[.[.[/auto-retail-integration]-[DirectJDKLog.java:179]-Initializing Spring embedded WebApplicationContext
+2019-10-04 17:44:15 [localhost-startStop-1] INFO 	o.s.web.context.ContextLoader-[EmbeddedWebApplicationContext.java:276]-Root WebApplicationContext: initialization completed in 74054 ms
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.ServletRegistrationBean-[ServletRegistrationBean.java:190]-Mapping servlet: 'dispatcherServlet' to [/]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.ServletRegistrationBean-[ServletRegistrationBean.java:190]-Mapping servlet: 'messageDispatcherServlet' to [/services/*]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'requestContextFilter' to: [/*]
+2019-10-04 17:44:16 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'corsFilter' to: [/*]
+2019-10-04 17:44:17 [main] INFO 	c.c.s.r.i.boot.PersistenceContext-[PersistenceContext.java:70]-Initiate retailDataStore instance
+2019-10-04 17:44:17 [main] WARN 	o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext-[AbstractApplicationContext.java:550]-Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'retailDataStore' defined in class path resource [com/capitaworld/service/retail/integration/boot/PersistenceContext.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+2019-10-04 17:44:17 [main] INFO 	o.a.catalina.core.StandardService-[DirectJDKLog.java:179]-Stopping service Tomcat
+2019-10-04 17:44:18 [main] INFO 	o.s.b.a.l.AutoConfigurationReportLoggingInitializer-[AutoConfigurationReportLoggingInitializer.java:101]-
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-10-04 17:44:18 [main] ERROR	o.s.boot.SpringApplication-[SpringApplication.java:815]-Application startup failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'retailDataStore' defined in class path resource [com/capitaworld/service/retail/integration/boot/PersistenceContext.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1173)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1067)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1081)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:856)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:370)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1162)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1151)
+	at com.capitaworld.service.retail.integration.boot.RetailIntegrationApplication.main(RetailIntegrationApplication.java:19)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:48)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:87)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:50)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:51)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:189)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:588)
+	... 28 common frames omitted
+Caused by: java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.core.env.AbstractPropertyResolver.getRequiredProperty(AbstractPropertyResolver.java:183)
+	at org.springframework.core.env.AbstractEnvironment.getRequiredProperty(AbstractEnvironment.java:556)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext.dataSource(PersistenceContext.java:73)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$c03e36d5.CGLIB$dataSource$0(<generated>)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$c03e36d5$$FastClassBySpringCGLIB$$b0ad145f.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:228)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:358)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$c03e36d5.dataSource(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:162)
+	... 29 common frames omitted
+2019-10-04 19:33:11 [main] INFO 	c.c.s.r.i.b.RetailIntegrationApplication-[StartupInfoLogger.java:48]-Starting RetailIntegrationApplication v0.0.1 on DC-UAT-ADM1 with PID 5904 (C:\AUTO_LOAN_RETAIL_PSB_version_3.1\version_3.0.1\Deployment\service-retail-integration-0.0.1.jar started by dc_canadmin in C:\AUTO_LOAN_RETAIL_PSB_version_3.1\version_3.0.1\Deployment)
+2019-10-04 19:33:11 [main] INFO 	c.c.s.r.i.b.RetailIntegrationApplication-[SpringApplication.java:637]-No active profile set, falling back to default profiles: default
+2019-10-04 19:33:12 [main] INFO 	o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext-[AbstractApplicationContext.java:582]-Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@73a8dfcc: startup date [Fri Oct 04 19:33:12 IST 2019]; root of context hierarchy
+2019-10-04 19:33:14 [background-preinit] INFO 	o.h.validator.internal.util.Version-[Version.java:30]-HV000001: Hibernate Validator 5.3.4.Final
+2019-10-04 19:33:55 [main] INFO 	o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker-[PostProcessorRegistrationDelegate.java:325]-Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$4c622115] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-04 19:33:55 [main] INFO 	o.s.w.s.a.s.AnnotationActionEndpointMapping-[AbstractAddressingEndpointMapping.java:236]-Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2019-10-04 19:33:55 [main] INFO 	o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker-[PostProcessorRegistrationDelegate.java:325]-Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$a7ca5c16] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-04 19:33:57 [main] INFO 	o.s.b.c.e.t.TomcatEmbeddedServletContainer-[TomcatEmbeddedServletContainer.java:89]-Tomcat initialized with port(s): 8287 (http)
+2019-10-04 19:33:57 [main] INFO 	o.a.catalina.core.StandardService-[DirectJDKLog.java:179]-Starting service Tomcat
+2019-10-04 19:33:57 [main] INFO 	o.a.catalina.core.StandardEngine-[DirectJDKLog.java:179]-Starting Servlet Engine: Apache Tomcat/8.5.11
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.a.c.c.C.[.[.[/auto-retail-integration]-[DirectJDKLog.java:179]-Initializing Spring embedded WebApplicationContext
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.web.context.ContextLoader-[EmbeddedWebApplicationContext.java:276]-Root WebApplicationContext: initialization completed in 46078 ms
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.ServletRegistrationBean-[ServletRegistrationBean.java:190]-Mapping servlet: 'dispatcherServlet' to [/]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.ServletRegistrationBean-[ServletRegistrationBean.java:190]-Mapping servlet: 'messageDispatcherServlet' to [/services/*]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'requestContextFilter' to: [/*]
+2019-10-04 19:33:58 [localhost-startStop-1] INFO 	o.s.b.w.s.FilterRegistrationBean-[AbstractFilterRegistrationBean.java:258]-Mapping filter: 'corsFilter' to: [/*]
+2019-10-04 19:33:59 [main] INFO 	c.c.s.r.i.boot.PersistenceContext-[PersistenceContext.java:70]-Initiate retailDataStore instance
+2019-10-04 19:33:59 [main] WARN 	o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext-[AbstractApplicationContext.java:550]-Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'retailDataStore' defined in class path resource [com/capitaworld/service/retail/integration/boot/PersistenceContext.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+2019-10-04 19:33:59 [main] INFO 	o.a.catalina.core.StandardService-[DirectJDKLog.java:179]-Stopping service Tomcat
+2019-10-04 19:33:59 [main] INFO 	o.s.b.a.l.AutoConfigurationReportLoggingInitializer-[AutoConfigurationReportLoggingInitializer.java:101]-
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-10-04 19:33:59 [main] ERROR	o.s.boot.SpringApplication-[SpringApplication.java:815]-Application startup failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'retailDataStore' defined in class path resource [com/capitaworld/service/retail/integration/boot/PersistenceContext.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1173)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1067)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:296)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1081)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:856)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:122)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:370)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1162)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1151)
+	at com.capitaworld.service.retail.integration.boot.RetailIntegrationApplication.main(RetailIntegrationApplication.java:19)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:48)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:87)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:50)
+	at org.springframework.boot.loader.JarLauncher.main(JarLauncher.java:51)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:189)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:588)
+	... 28 common frames omitted
+Caused by: java.lang.IllegalStateException: required key [capitaworld.retail.integration.db.driver] not found
+	at org.springframework.core.env.AbstractPropertyResolver.getRequiredProperty(AbstractPropertyResolver.java:183)
+	at org.springframework.core.env.AbstractEnvironment.getRequiredProperty(AbstractEnvironment.java:556)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext.dataSource(PersistenceContext.java:73)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$19608788.CGLIB$dataSource$2(<generated>)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$19608788$$FastClassBySpringCGLIB$$4500568d.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:228)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:358)
+	at com.capitaworld.service.retail.integration.boot.PersistenceContext$$EnhancerBySpringCGLIB$$19608788.dataSource(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:162)
+	... 29 common frames omitted

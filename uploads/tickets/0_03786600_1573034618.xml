@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FORM:FORM3CB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:FORM="http://incometaxindiaefiling.gov.in/F3CB" xmlns:Form="http://incometaxindiaefiling.gov.in/common"
+ xmlns="http://incometaxindiaefiling.gov.in/F3CB" xsi:schemaLocation ="http://incometaxindiaefiling.gov.in/F3CB Form3CB.xsd"
+ xmlns:f3cd="http://incometaxindiaefiling.gov.in/F3CD">
+    <F3CB>
+        <CreationInfo xmlns="http://incometaxindiaefiling.gov.in/common">
+            <SWVersionNo>1.0</SWVersionNo>
+            <SWCreatedBy>PROFESSIONAL SOFTEC P LTD</SWCreatedBy>
+            <XMLCreatedBy>COMPUTAX</XMLCreatedBy>
+            <XMLCreationDate>2019-10-23</XMLCreationDate>
+            <IntermediaryCity>Jaipur</IntermediaryCity>
+        </CreationInfo>
+        <Form_Details xmlns="http://incometaxindiaefiling.gov.in/common">
+            <FormName>FORM3CB</FormName>
+            <Description>Audit report under section 44AB of the Income-tax Act, 1961, in the case of a person referred to in clause (b) of sub-rule (1) of rule 6G</Description>
+            <AssessmentYear>2019</AssessmentYear>
+            <SchemaVer>Ver2.0</SchemaVer>
+            <FormVer>1.5</FormVer>
+        </Form_Details>
+        <Declaration>
+            <Point1>
+                <I_We>I</I_We>
+                <Year>2019</Year>
+                <TypeOfAccount>Profit and loss account</TypeOfAccount>
+                <StartDate>2018-04-01</StartDate>
+                <EndDate>2019-03-31</EndDate>
+                <AssesseeName>
+                    <LastName>M/S SURANA MARKETING</LastName>
+                </AssesseeName>
+                <AddressDetail>
+                    <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                    <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                    <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                    <StateCode>04</StateCode>
+                    <PinCode>781001</PinCode>
+                </AddressDetail>
+                <PAN>ASNPS8913K</PAN>
+            </Point1>
+            <Point2>
+                <I_We>I</I_We>
+                <TypeOfAccount>Profit and loss account</TypeOfAccount>
+                <HeadOfficeLocation>C/O KAMAL SINGH SURANA,L AND J MARKET,H.B ROAD,FANCY BAZAR,GUWAHATI</HeadOfficeLocation>
+                <NumberOfBrances>0</NumberOfBrances>
+            </Point2>
+            <Point3>
+                <PointA>
+                    <I_We>I</I_We>
+                </PointA>
+                <PointB_A>
+                    <I_We>I</I_We>
+                    <My_Our>My</My_Our>
+                </PointB_A>
+                <PointB_B>
+                    <My_Our1>My</My_Our1>
+                    <My_Our2>My</My_Our2>
+                </PointB_B>
+                <PointB_C>
+                    <My_Our1>My</My_Our1>
+                    <My_Our2>My</My_Our2>
+                    <Me_Us>Me</Me_Us>
+                    <PointFirst>2019</PointFirst>
+                    <PointSecond>
+                        <typeOfAccount>Profit and loss account</typeOfAccount>
+                        <PLSD>Profit</PLSD>
+                    </PointSecond>
+                </PointB_C>
+            </Point3>
+            <Point5>
+                <My_Our1>My</My_Our1>
+                <My_Our2>My</My_Our2>
+                <Me_Us>Me</Me_Us>
+            </Point5>
+        </Declaration>
+        <PartA xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <AssesseeName>
+                <LastName>M/S SURANA MARKETING</LastName>
+            </AssesseeName>
+            <AddressDetail>
+                <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                <StateCode>04</StateCode>
+                <PinCode>781001</PinCode>
+            </AddressDetail>
+            <PAN>ASNPS8913K</PAN>
+            <IndirectTaxFlag>Y</IndirectTaxFlag>
+            <Form3cdIndirectTax>
+                <IndirectTaxType>GST</IndirectTaxType>
+                <StateCode>04</StateCode>
+                <RegNo>18ASNPS8913K1ZV</RegNo>
+            </Form3cdIndirectTax>
+            <Status>1</Status>
+            <PartAStartDate>2018-04-01</PartAStartDate>
+            <PartAEndDate>2019-03-31</PartAEndDate>
+            <AssessmentYear>2019-20</AssessmentYear>
+            <Clause>
+                <ClauseNo>44ABa</ClauseNo>
+            </Clause>
+        </PartA>
+        <F3cdFirmAopDtlNatOfBusiness xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdFirmAopDetailPK>
+                <ChangeType>CURR_NATURE_BUSNS</ChangeType>
+                <FirmAopDesc>09027</FirmAopDesc>
+            </Form3cdFirmAopDetailPK>
+        </F3cdFirmAopDtlNatOfBusiness>
+        <Form3cdBooksOfAccLst xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>LBEX</BooksOfAccType>
+                <BooksDetail>Cash Book</BooksDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLst>
+        <Form3cdBooksOfAccLst xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>LBEX</BooksOfAccType>
+                <BooksDetail>Bank Book</BooksDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLst>
+        <Form3cdBooksOfAccLst xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>LBEX</BooksOfAccType>
+                <BooksDetail>Journal</BooksDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLst>
+        <Form3cdBooksOfAccLst xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>LBEX</BooksOfAccType>
+                <BooksDetail>Ledger' etc (Computerized)</BooksDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLst>
+        <Form3cdBooksOfAccLstAddress xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>BOAM</BooksOfAccType>
+                <BooksDetail>Cash Book (Computerized)</BooksDetail>
+                <AddressDetail>
+                    <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                    <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                    <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                    <StateCode>04</StateCode>
+                    <PinCode>781001</PinCode>
+                </AddressDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLstAddress>
+        <Form3cdBooksOfAccLstAddress xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>BOAM</BooksOfAccType>
+                <BooksDetail>Bank Book (Computerized)</BooksDetail>
+                <AddressDetail>
+                    <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                    <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                    <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                    <StateCode>04</StateCode>
+                    <PinCode>781001</PinCode>
+                </AddressDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLstAddress>
+        <Form3cdBooksOfAccLstAddress xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>BOAM</BooksOfAccType>
+                <BooksDetail>Journal (Computerized)</BooksDetail>
+                <AddressDetail>
+                    <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                    <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                    <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                    <StateCode>04</StateCode>
+                    <PinCode>781001</PinCode>
+                </AddressDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLstAddress>
+        <Form3cdBooksOfAccLstAddress xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdBooksOfAccLstPK>
+                <BooksOfAccType>BOAM</BooksOfAccType>
+                <BooksDetail>Ledger' etc (Computerized) (Computerized)</BooksDetail>
+                <AddressDetail>
+                    <AddrDetail1>C/O KAMAL SINGH SURANA, L AND J MARKET</AddrDetail1>
+                    <AddrDetail2>H.B ROAD, FANCY BAZAR</AddrDetail2>
+                    <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+                    <StateCode>04</StateCode>
+                    <PinCode>781001</PinCode>
+                </AddressDetail>
+            </Form3cdBooksOfAccLstPK>
+        </Form3cdBooksOfAccLstAddress>
+        <Form3cdChngMethAccVal xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdChngMethAccValPK>
+                <AccType>DEVIATION_ACC</AccType>
+                <Detail>Mercantile system</Detail>
+                <IncreaseProfits>0</IncreaseProfits>
+                <DecreaseProfits>0</DecreaseProfits>
+            </Form3cdChngMethAccValPK>
+        </Form3cdChngMethAccVal>
+        <Form3cdDisclVal xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSI</Icds>
+                <Disclosure>There is no change in accounting policies regularly employed by the Assesse. The accounts are prepared on mercantile system of accountancy under historical cost convention in accordance with the accounting standards issued by the Institute of Chartered Accountants of India.</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSII</Icds>
+                <Disclosure>Inventories are valued at cost or net realizable value (NRV) whichever is lower, while considering the cost of the purchase in inventory; it does not include the amount of taxes, duties which are subsequently recoverable from taxing authorities. Similarly the amounts of purchase are also stated net of such taxes/duties. This treatment has no impact on current years income.</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSIII</Icds>
+                <Disclosure>NA</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSIV</Icds>
+                <Disclosure>(i)Revenue from Sale of Goods is recognized when all the significant risk and rewards of ownership are transferred to the buyer and seller retains no effective control of the goods transferred to degree usually associated with ownership (ii) No Significant uncertainty exists regarding the amount of the consideration that will be derived from the sale of goods (iii) Interest on refund of any tax, duty or cess is deemed to be the income of the previous year in which such interest is received.</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSIX</Icds>
+                <Disclosure>Borrowing Costs that are directly attributable to the acquisition or construction of a qualifying asset is capitalized as part of the cost of assets. Other borrowing costs are recognized as an expense in the Period in which they are incurred. However an amount of Rs Nil. Pertaining to the borrowing cost was capitalized during the previous year.</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSV</Icds>
+                <Disclosure>(i)Fixed Assets are stated at historical cost less accumulated depreciation (ii)Cost of fixed Assets comprises its purchase price and any attributable expenditure (both direct and indirect) for bringing an asset to its working condition for its intended use. (iii)Depreciation on tangible fixed assets has been computed in accordance with the provisions of The Income Tax Act 1961.</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSVII</Icds>
+                <Disclosure>NA</Disclosure>
+            </Form3cdDisclValPK>
+            <Form3cdDisclValPK>
+                <AccType>DEVIATION_VALUE</AccType>
+                <Icds>ICDSX</Icds>
+                <Disclosure>Provision, Contingent Liabilities and Assets have been disclosed by way of notes in the notes on accounts, if required.</Disclosure>
+            </Form3cdDisclValPK>
+        </Form3cdDisclVal>
+        <MethodValCS xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <ChangeType>Finished Goods Cost or NRV Whichever is lower
+Stock Valuation Change - No</ChangeType>
+        </MethodValCS>
+        <Form3cdDeprAllw xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <DescBlockAssets>1</DescBlockAssets>
+            <RateOfDep>1</RateOfDep>
+            <OpeningWDV>4064</OpeningWDV>
+            <Additions>
+                <PurchaseOrSaleDate>2019-02-12</PurchaseOrSaleDate>
+                <DatePutToUse>2019-02-12</DatePutToUse>
+                <PurchaseOrSaleValue>39830</PurchaseOrSaleValue>
+                <Modvat>0</Modvat>
+                <ExchangeRateChange>0</ExchangeRateChange>
+                <subsidyGrant>0</subsidyGrant>
+                <TotalPurchaseValue>39830</TotalPurchaseValue>
+            </Additions>
+            <TotalPurchase>39830</TotalPurchase>
+            <TotalModvat>0</TotalModvat>
+            <TotalChangeExchangeRate>0</TotalChangeExchangeRate>
+            <TotalSubsidyGrant>0</TotalSubsidyGrant>
+            <TotalPurchaseValue>39830</TotalPurchaseValue>
+            <TotalDeduction>0</TotalDeduction>
+            <DepAllowable>3597</DepAllowable>
+            <WrittenDownVal>40298</WrittenDownVal>
+        </Form3cdDeprAllw>
+        <Form3cdDeprAllw xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <DescBlockAssets>3</DescBlockAssets>
+            <RateOfDep>3</RateOfDep>
+            <OpeningWDV>63</OpeningWDV>
+            <TotalPurchase>0</TotalPurchase>
+            <TotalModvat>0</TotalModvat>
+            <TotalChangeExchangeRate>0</TotalChangeExchangeRate>
+            <TotalSubsidyGrant>0</TotalSubsidyGrant>
+            <TotalPurchaseValue>0</TotalPurchaseValue>
+            <TotalDeduction>0</TotalDeduction>
+            <DepAllowable>25</DepAllowable>
+            <WrittenDownVal>38</WrittenDownVal>
+        </Form3cdDeprAllw>
+        <Form3cdDeprAllw xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <DescBlockAssets>11</DescBlockAssets>
+            <RateOfDep>11</RateOfDep>
+            <OpeningWDV>20096</OpeningWDV>
+            <TotalPurchase>0</TotalPurchase>
+            <TotalModvat>0</TotalModvat>
+            <TotalChangeExchangeRate>0</TotalChangeExchangeRate>
+            <TotalSubsidyGrant>0</TotalSubsidyGrant>
+            <TotalPurchaseValue>0</TotalPurchaseValue>
+            <TotalDeduction>0</TotalDeduction>
+            <DepAllowable>2009</DepAllowable>
+            <WrittenDownVal>18087</WrittenDownVal>
+        </Form3cdDeprAllw>
+        <Form3cdUnpaidStrySec43b xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <LiabilityType>PBDD</LiabilityType>
+            <Section>43Ba</Section>
+            <Description>GST</Description>
+            <Amount>192125</Amount>
+        </Form3cdUnpaidStrySec43b>
+        <Form3cdAmtSec269ssDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <LenderName>Mukesh Sancheti</LenderName>
+            <LenderAddress>Fancy Bazar,Guwahati</LenderAddress>
+            <AmtLoanDeposit>200000</AmtLoanDeposit>
+            <LoanDepChqDrftFlag>C</LoanDepChqDrftFlag>
+            <LoanDepSqrdPyFlag>N</LoanDepSqrdPyFlag>
+            <MaxAmtOsAccPy>204095</MaxAmtOsAccPy>
+            <LoanDepChqDrftType>Y</LoanDepChqDrftType>
+        </Form3cdAmtSec269ssDetail>
+        <Form3cdAmtSec269ssDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <LenderName>Mukesh Sancheti and Sons</LenderName>
+            <LenderAddress>FANCY BAZAR,GUWAHATI</LenderAddress>
+            <AmtLoanDeposit>300000</AmtLoanDeposit>
+            <LoanDepChqDrftFlag>C</LoanDepChqDrftFlag>
+            <LoanDepSqrdPyFlag>N</LoanDepSqrdPyFlag>
+            <MaxAmtOsAccPy>312150</MaxAmtOsAccPy>
+            <LoanDepChqDrftType>Y</LoanDepChqDrftType>
+        </Form3cdAmtSec269ssDetail>
+        <Form3cdAmtSec269ssDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <LenderName>Surana Mercantile (Vishal Suarana)</LenderName>
+            <LenderAddress>FANCY BAZAR,GUWAHATI</LenderAddress>
+            <AmtLoanDeposit>350000</AmtLoanDeposit>
+            <LoanDepChqDrftFlag>C</LoanDepChqDrftFlag>
+            <LoanDepSqrdPyFlag>N</LoanDepSqrdPyFlag>
+            <MaxAmtOsAccPy>600000</MaxAmtOsAccPy>
+            <LoanDepChqDrftType>Y</LoanDepChqDrftType>
+        </Form3cdAmtSec269ssDetail>
+        <Form3cdAmtSec269tDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <PayeeName>Choradia and Sons</PayeeName>
+            <PayeeAddress>Fancy Bazar,Guwahati</PayeeAddress>
+            <AmtRepayment>21998</AmtRepayment>
+            <MaxAmtOsAccPy>21998</MaxAmtOsAccPy>
+            <RepaymentChqDraftFlag>C</RepaymentChqDraftFlag>
+            <RepaymentChqDraftType>Y</RepaymentChqDraftType>
+        </Form3cdAmtSec269tDetail>
+        <Form3cdAmtSec269tDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <PayeeName>Lovely Choradia</PayeeName>
+            <PayeeAddress>Fancy Bazar,Guwahati</PayeeAddress>
+            <AmtRepayment>46705</AmtRepayment>
+            <MaxAmtOsAccPy>479161</MaxAmtOsAccPy>
+            <RepaymentChqDraftFlag>C</RepaymentChqDraftFlag>
+            <RepaymentChqDraftType>Y</RepaymentChqDraftType>
+        </Form3cdAmtSec269tDetail>
+        <Form3cdAmtSec269tDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <PayeeName>Sukesh Choradia</PayeeName>
+            <PayeeAddress>Fancy Bazar,Guwahati</PayeeAddress>
+            <AmtRepayment>41040</AmtRepayment>
+            <MaxAmtOsAccPy>631560</MaxAmtOsAccPy>
+            <RepaymentChqDraftFlag>C</RepaymentChqDraftFlag>
+            <RepaymentChqDraftType>Y</RepaymentChqDraftType>
+        </Form3cdAmtSec269tDetail>
+        <Form3cdAmtSec269tDetail xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <PayeeName>Surana Sales Corporation</PayeeName>
+            <PayeeAddress>Fancy Bazar,Guwahati</PayeeAddress>
+            <AmtRepayment>30000</AmtRepayment>
+            <MaxAmtOsAccPy>30000</MaxAmtOsAccPy>
+            <RepaymentChqDraftFlag>C</RepaymentChqDraftFlag>
+            <RepaymentChqDraftType>Y</RepaymentChqDraftType>
+        </Form3cdAmtSec269tDetail>
+        <Form3cdSpecloss73 xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdSpec73Flag>N</Form3cdSpec73Flag>
+        </Form3cdSpecloss73>
+        <Form3cdSpec73A xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdSpec73AFlag>N</Form3cdSpec73AFlag>
+        </Form3cdSpec73A>
+        <Form3cdSpecdeemdBus73 xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <Form3cdSpecdeemdBusFlag>X</Form3cdSpecdeemdBusFlag>
+        </Form3cdSpecdeemdBus73>
+        <Form3cdChapXVII xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <TAN>SHLK00096F</TAN>
+            <Sec>194A</Sec>
+            <NatureOfPaymnt>Interest other than Interest on securities</NatureOfPaymnt>
+            <AmtOfNatureSpec>303202</AmtOfNatureSpec>
+            <TotTaxDedCollectd>303202</TotTaxDedCollectd>
+            <TotTaxSpecRate>303202</TotTaxSpecRate>
+            <AmtTaxSpecRate>30321</AmtTaxSpecRate>
+            <TotLessThanSpecRate>0</TotLessThanSpecRate>
+            <AmtTaxDedOrCollect>0</AmtTaxDedOrCollect>
+            <AmtNotDepToGovt>0</AmtNotDepToGovt>
+        </Form3cdChapXVII>
+        <Form3cdTaxDedCollect xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <TAN>SHLK00096F</TAN>
+            <TypeOfForm>26Q</TypeOfForm>
+            <DueDateOfFurnish>2019-05-31</DueDateOfFurnish>
+            <DateOfFurnish>2019-05-30</DateOfFurnish>
+            <TransactionsFlag>Y</TransactionsFlag>
+        </Form3cdTaxDedCollect>
+        <Form3cdSec2011A206C7 xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <TAN>SHLK00096F</TAN>
+            <AmtOfIntrest>900</AmtOfIntrest>
+            <AmtPaid>900</AmtPaid>
+            <DueDate>2019-05-30</DueDate>
+        </Form3cdSec2011A206C7>
+        <CostAudit xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <CostAuditFlag>X</CostAuditFlag>
+        </CostAudit>
+        <AuditExcise xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <AuditExciseFlag>N</AuditExciseFlag>
+        </AuditExcise>
+        <AuditSec72 xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <AuditSec72Flag>N</AuditSec72Flag>
+        </AuditSec72>
+        <Form3cdAccountingRatioCalculations xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <PrevYrProfTurnOvr>
+                <TotalTurnover>112911133</TotalTurnover>
+                <GrossprofitTurnover>6.22</GrossprofitTurnover>
+                <NetprofitTurnover1>1.47</NetprofitTurnover1>
+                <StockInTrade>13.12</StockInTrade>
+                <MaterialconsumedFinishedgoods>0</MaterialconsumedFinishedgoods>
+                <GrosProfNumertr>7028490</GrosProfNumertr>
+                <GrosProfDmntr>112911133</GrosProfDmntr>
+                <NetProfNumertr>1663365</NetProfNumertr>
+                <NetProfDmntr>112911133</NetProfDmntr>
+                <StockTradeNmrtr>14814570</StockTradeNmrtr>
+                <StockTradeDmntr>112911133</StockTradeDmntr>
+                <MaterialNumrtr>0</MaterialNumrtr>
+                <MaterialDmntr>0</MaterialDmntr>
+            </PrevYrProfTurnOvr>
+            <PrecPrevYrProfTurnOvr>
+                <TotalTurnover>105406331</TotalTurnover>
+                <GrossprofitTurnover>7.62</GrossprofitTurnover>
+                <NetprofitTurnover1>1.75</NetprofitTurnover1>
+                <StockInTrade>12.95</StockInTrade>
+                <MaterialconsumedFinishedgoods>0</MaterialconsumedFinishedgoods>
+                <GrosProfNumertr>8036376</GrosProfNumertr>
+                <GrosProfDmntr>105406331</GrosProfDmntr>
+                <NetProfNumertr>1846563</NetProfNumertr>
+                <NetProfDmntr>105406331</NetProfDmntr>
+                <StockTradeNmrtr>13645388</StockTradeNmrtr>
+                <StockTradeDmntr>105406331</StockTradeDmntr>
+                <MaterialNumrtr>0</MaterialNumrtr>
+                <MaterialDmntr>0</MaterialDmntr>
+            </PrecPrevYrProfTurnOvr>
+        </Form3cdAccountingRatioCalculations>
+        <Form3cdFlags xmlns="http://incometaxindiaefiling.gov.in/F3CD">
+            <ChngMethodOfAcc>N</ChngMethodOfAcc>
+            <ChngShareSec79>X</ChngShareSec79>
+            <ComplyXVIIB>Y</ComplyXVIIB>
+            <ChangeNaturBuisnes>N</ChangeNaturBuisnes>
+            <BookOfAcnt>N</BookOfAcnt>
+            <PrftLoassAcnt>N</PrftLoassAcnt>
+            <Sec145>N</Sec145>
+            <Sec145A>N</Sec145A>
+            <Sec40A3>Y</Sec40A3>
+            <Sec40A3A>Y</Sec40A3A>
+            <SalesTax>N</SalesTax>
+            <VATPY>N</VATPY>
+            <Section69D>N</Section69D>
+            <SectionDed>N</SectionDed>
+            <ChapXVIIFlag>Y</ChapXVIIFlag>
+            <TaxPrescTime>Y</TaxPrescTime>
+            <Sec201_1A_206_C7>Y</Sec201_1A_206_C7>
+            <Form3cdSec562viiaFlag>X</Form3cdSec562viiaFlag>
+            <Form3cdSec562viibFlag>X</Form3cdSec562viibFlag>
+            <IncomeCluaseixofsubsection2>N</IncomeCluaseixofsubsection2>
+            <IncomeCluasexofsubsection2>N</IncomeCluasexofsubsection2>
+            <TransferPriceSection92CE>N</TransferPriceSection92CE>
+            <IncurredExpenditure>N</IncurredExpenditure>
+            <SubClauseeofClause22>N</SubClauseeofClause22>
+            <FurnishStatement>N</FurnishStatement>
+            <SubSec2Sec286>N</SubSec2Sec286>
+        </Form3cdFlags>
+        <OtherInformation1 xmlns="http://incometaxindiaefiling.gov.in/common">
+            <FirstName>Chetan</FirstName>
+            <MiddleName />
+            <LastName>Gangwal</LastName>
+            <AddrDetail1>409,4th FLOOR,AMAZE SHOPPING MALL</AddrDetail1>
+            <AddrDetail2>A.T.ROAD</AddrDetail2>
+            <CityOrTownOrDistrict>GUWAHATI</CityOrTownOrDistrict>
+            <StateCode>04</StateCode>
+            <PinCode>781001</PinCode>
+            <Place>GUWAHATI</Place>
+            <Date>2019-09-27</Date>
+            <MembershipNo>302446</MembershipNo>
+            <FirmRegNum>0327626E</FirmRegNum>
+        </OtherInformation1>
+    </F3CB>
+</FORM:FORM3CB>
