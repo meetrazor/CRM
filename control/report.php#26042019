@@ -1,0 +1,1585 @@
+<?php
+include_once 'header.php';
+include_once '../core/Validator.php';
+include_once '../phpexcel/PHPExcel.php';
+$table = "prospect_master";
+$table_id = 'prospect_id';
+$user_id = $ses->Get("user_id");
+$action = $db->FilterParameters($_GET['act']);
+if('telecaller' === $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $categoryId = (isset($data['category_id'])) ? $data['category_id']  : "";
+    $cityId = (isset($data['city_id'])) ? $data['city_id']  : "";
+    $userId = (isset($data['tele_caller_id'])) ? $data['tele_caller_id']  : "";
+    $mainTable = array("activity_master as am",array("concat(u.first_name,' ',u.last_name) as user_name",'count(am.activity_id) as call_count',"u.user_id"));
+    $joinTable = array(
+        array("left","prospect_master as pm","pm.prospect_id = am.type_id"),
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","category_master as catm","catm.category_id = pm.category_id"),
+        array("left","admin_user as u","u.user_id = am.created_by"),
+        array("left","city as c","c.city_id = pm.city_id")
+
+    );
+    $condition = ($userId != '') ? "am.created_by = '{$userId}'" : "1=1";
+    $leadCountCondition = '1=1';
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $leadCountCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(am.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $leadCountCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+        $leadCountCondition .= " and cm.campaign_id in ($cIds)";
+    }
+
+    if($categoryId != ''){
+        if(is_array($categoryId)){
+            $catIds = implode(",",$categoryId);
+        } else {
+            $catIds = $categoryId;
+        }
+        $condition .= " and catm.category_id in ($catIds)";
+        $leadCountCondition .= " and catm.category_id in ($catIds)";
+
+    }
+
+    if($cityId != ''){
+        if(is_array($cityId)){
+            $cityIds = implode(",",$cityId);
+        } else {
+            $cityIds = $cityId;
+        }
+        $condition .= " and c.city_id in ($cityIds)";
+        $leadCountCondition .= " and c.city_id in ($cityIds)";
+    }
+
+    $userWiseQ = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(am.activity_id)"=>"desc"),null,"u.user_id");
+    $userWiseRes = $db->FetchToArrayFromResultset($userWiseQ);
+
+    if(empty($userWiseRes)){
+        $userWiseRes =  array(array(
+            "user_name" => 0,
+            "call_count" => 0,
+            "user_id" => 0
+        ));
+    }
+        if(count($userWiseRes) > 0){
+        foreach ($userWiseRes as $userData){
+            $LCondition = $leadCountCondition." and lm.created_by = '{$userData['user_id']}'";
+            $callToLead = Utility::userCount("lead_count",$LCondition);
+            $dataArrElem = array(
+                "User Name"                      => $userData['user_name'],
+                "User Count"                         => $userData['call_count'],
+                "Lead Count"                         => $callToLead,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "User Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+} elseif('cityreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $cityId = (isset($data['city_id'])) ? $data['city_id']  : "";
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $categoryId = (isset($data['category_id'])) ? $data['category_id']  : "";
+    $mainTable = array("prospect_master as pm",array("c.city_name",'count(*) as city_count',"c.city_id"));
+    $joinTable = array(
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","category_master as catm","catm.category_id = pm.category_id"),
+        array("left","city as c","c.city_id = pm.city_id")
+
+    );
+    $condition = ($cityId != '') ? "c.city_id = '{$cityId}'" : "1=1";
+    $cityCountCondition = '1=1';
+    $leadCountCondition = '1=1';
+    $prospectCondition = ' and 1=1';
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (pm.DATE_FORMAT(pm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $cityCountCondition .= " && (DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $leadCountCondition .= " && (lm.DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (pm.DATE_FORMAT(pm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(pm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $cityCountCondition .= " && (DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $leadCountCondition .= " && (lm.DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+        $leadCountCondition .= " and cm.campaign_id in ($cIds)";
+        $prospectCondition .= " and campaign_id in ($cIds)";
+    }
+
+    if($categoryId != ''){
+        if(is_array($categoryId)){
+            $catIds = implode(",",$categoryId);
+        } else {
+            $catIds = $categoryId;
+        }
+        $condition .= " and catm.category_id in ($catIds)";
+        $leadCountCondition .= " and catm.category_id in ($catIds)";
+        $prospectCondition .= " and category_id in ($catIds)";
+    }
+
+    $cityWiseQ = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),array(0,10),"c.city_id");
+    $cityWiseRes = $db->FetchToArrayFromResultset($cityWiseQ);
+    if(empty($cityWiseRes)){
+        $cityWiseRes =  array(array(
+            "city_name" => 0,
+            "city_count" => 0,
+            "city_id" => 0
+        ));
+    }
+
+    if(count($cityWiseRes) > 0){
+        foreach ($cityWiseRes as $cityData){
+            $cCondition = $cityCountCondition." && type_id in (select prospect_id from prospect_master where city_id = '{$cityData['city_id']}' $prospectCondition) AND source_type = 'prospect'";
+            $cityCall = Utility::userCount("call",$cCondition);
+            $LCondition = $leadCountCondition." and lm.city_id = '{$cityData['city_id']}'";
+            $callToLead = Utility::userCount("lead_count",$LCondition);
+            $dataArrElem = array(
+                "City Name"                      => $cityData['city_name'],
+                "City Count"                         => $cityData['city_count'],
+                "City Lead"                         => $callToLead,
+                "City Call"                         => $cityCall,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "City Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}elseif('leadreport' == $action){
+    $data = $db->FilterParameters($_POST);
+
+    $condition = "1=1";
+    $leadCondition = "1=1";
+
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $leadCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $range_condition = " && (DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $leadCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $range_condition = " && (DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    $leadRes =  array(
+        "Total Prospect" =>  Utility::userCount("prospect",$condition),
+        "Total Call" =>  Utility::userCount("call",$condition." group by type_id"),
+        "Total Lead" =>  Utility::userCount("lead_count",$leadCondition),
+    );
+
+    if(count($leadRes) > 0){
+        foreach ($leadRes as $label => $leadData){
+            $dataArrElem = array(
+                $label                      => $leadData,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+
+                $dataChartElem[] = $key;
+                $dataChartElem[] = (int) $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}elseif('dispositionreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $dispositionId = (isset($data['disposition_id'])) ? $data['disposition_id']  : "";
+
+    $condition = "am.is_latest = 1 and source_type = 'prospect'";
+
+    if($dispositionId != ''){
+        if(is_array($dispositionId)){
+            $dIds = implode(",",$dispositionId);
+        } else {
+            $dIds = $dispositionId;
+        }
+        $condition .= " and dm.disposition_id in ($dIds)";
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+    }
+
+
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(am.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    $mainTable = array("activity_master as am",array("dm.disposition_name",'count(*) as disposition_count'));
+    $joinTable = array(
+        array("left","prospect_master as pm","pm.prospect_id = am.type_id"),
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","disposition_master as dm","dm.disposition_id = am.disposition_id")
+    );
+
+    $dispositionRes = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),null,"dm.disposition_id");
+    $dispositionWiseData = $db->FetchToArrayFromResultset($dispositionRes);
+    if(empty($dispositionWiseData)){
+        $dispositionWiseData =  array(array(
+            "disposition_name" => 0,
+            "disposition_count" => 0
+        ));
+    }
+
+    if(count($dispositionWiseData) > 0){
+        foreach ($dispositionWiseData as $dispositionData){
+            $dataArrElem = array(
+                "Disposition Name"                      => $dispositionData['disposition_name'],
+                "Disposition Count"                         => $dispositionData['disposition_count']
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "Disposition Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}
+elseif('campaignreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+
+    $condition = "1=1";
+
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+    }
+
+
+    $mainTable = array("prospect_master as pm",array("cm.campaign_name",'count(*) as campaign_count'));
+    $joinTable = array(
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id")
+
+    );
+    $campaignRes = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),array(0,10),"cm.campaign_id");
+    $campaignWiseData = $db->FetchToArrayFromResultset($campaignRes);
+    if(empty($campaignWiseData)){
+        $campaignWiseData =  array(array(
+            "campaign_name" => 0,
+            "campaign_count" => 0
+        ));
+    }
+
+    if(count($campaignWiseData) > 0){
+        foreach ($campaignWiseData as $campaignData){
+            $dataArrElem = array(
+                "campaign Name"                      => $campaignData['campaign_name'],
+                "campaign Count"                         => $campaignData['campaign_count']
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "campaign Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}
+elseif('monthreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $statusId = (isset($data['status_id'])) ? $data['status_id']  : "";
+    $filterYear = (isset($data['year'])) ? $data['year']  : "";
+    $filterMonth = (isset($data['month'])) ? $data['month']  : "";
+    $reportType = (isset($data['report_type'])) ? $data['report_type']  : "";
+    $statusCondition = " status_type = 'support'";
+    $misCondition = 't.is_merged != 1';
+
+
+    if($statusId != ''){
+        $selectedStatus = implode(",",$statusId);
+        $misCondition .= " AND (sm.status_id in ($selectedStatus))";
+        $statusCondition .= " AND (status_id in ($selectedStatus))";
+    }
+
+    if($filterYear != ''){
+        $selectedYear = implode(",",$filterYear);
+        $misCondition .= " AND (DATE_FORMAT(t.created_at, '%Y') in ($selectedYear))";
+    }
+
+    if($filterMonth != ''){
+        $selectedMonth = implode(",",$filterMonth);
+        $misCondition .= " AND (DATE_FORMAT(t.created_at, '%m') in ($selectedMonth))";
+    }
+
+    $mainTable = array("tickets as t",array("count(*) as number","DATE_FORMAT(t.created_at, '%b-%y') as month"));
+    $joinTable = array(
+        array("left","status_master as sm","sm.status_id = t.status_id",array("sm.status_name as status")),
+    );
+    $misDisRes = $db->JoinFetch($mainTable,$joinTable,$misCondition,array("YEAR(t.created_at)"=>"asc","MONTH(t.created_at)"=>"asc"),null,"MONTH(t.created_at), YEAR(t.created_at),
+     IF(t.status_id IS NULL OR t.status_id = '', 0, t.status_id)");
+    $misData = $db->FetchToArrayFromResultset($misDisRes);
+    $monthFormatData = array();
+    $totalCount = 0;
+    $totalPercent = 0;
+    foreach($misData as $key => $value){
+        $totalCount = $totalCount + $value['number'];
+        $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+        $monthFormatData[$value['month']][$value['status']] = $value['number'];
+    }
+    $statusData = $db->FetchToArray("status_master",array("status_name"),$statusCondition,array("sort_order"=>"asc"));
+    $statusData = array_merge($statusData,array("Blank"));
+    if($reportType == 'html'){
+        if(count($monthFormatData) > 0){
+        ?>
+        <table class="table" id="dg_mis">
+            <thead>
+            <th>Month</th>
+            <?php
+            $total = array();
+            foreach($statusData as $statusName){ ?>
+                <th><?php echo $statusName; ?></th>
+            <?php }?>
+            <th>Total</th>
+            <th>In %</th>
+            </thead>
+            <tbody>
+            <?php
+            if(count($monthFormatData) > 0){
+                foreach($monthFormatData as $monthKey => $monthData){
+
+                    if($monthKey != ''){
+                        ?>
+                        <tr>
+                            <td><?php echo $monthKey; ?></td>
+
+                            <?php
+                            $subTotalOfStatus = 0;
+                            if(count($monthData) > 0){
+
+                                foreach($statusData as $statusName){
+
+                                    if(array_key_exists($statusName,$monthData)){
+                                        $subTotalOfStatus += $monthData[$statusName];
+                                        echo "<td class='te-number'>".$monthData[$statusName]."</td>";
+                                        $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $monthData[$statusName] : $monthData[$statusName];
+                                    } else {
+                                        echo "<td>-</td>";
+                                    }
+                                }
+                            }
+                            $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                            echo "<td class='te-number'>".$subTotalOfStatus."</td>";
+                            echo "<td class='te-number'>".round(100*$subTotalOfStatus/$totalCount , 2)."</td>";
+                            ?>
+                        </tr>
+                    <?php }?>
+                <?php }?>
+            <?php } ?>
+            <?php
+            if(count($monthFormatData) > 0){
+                echo "<th colspan='1'>Total</th>";
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$total)){
+                        echo "<td class='te-number'><b>".$total[$statusName]."</b></td>";
+                    } else {
+
+                        echo "<td>-</td>";
+                    }
+                }
+                echo "<td class='te-number'><b>".$totalCount."</b></td>";
+                echo "<td class='te-number'><b>".round($totalPercent,2)."%</b></td>";
+            }
+            ?>
+            </tbody>
+        </table>
+        <?php
+        } else {
+            echo "<div>
+                    <h3 class='col-xs-12' align='center'>
+                        <span style='color:#438EB9;'>No Result Found..</span>
+                    </h3>
+                </div>";
+        }
+    } elseif ($reportType == 'export'){
+        $total = array();
+        $headerArr = array(
+            "Month",
+         );
+        foreach($statusData as $statusName){
+            array_push($headerArr,$statusName);
+        }
+        array_push($headerArr,"Total");
+        array_push($headerArr,"In %");
+        $dataRows = array();
+        $key = 0;
+        foreach ($monthFormatData as $monthKey => $monthData) {
+            $dataRows[$key] = array($monthKey);
+            $subTotalOfStatus = 0;
+            foreach($statusData as $statusName){
+                if(array_key_exists($statusName,$monthData)){
+                    $subTotalOfStatus += $monthData[$statusName];
+                    array_push($dataRows[$key],$monthData[$statusName]);
+                    $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $monthData[$statusName] : $monthData[$statusName];
+                } else {
+                    array_push($dataRows[$key],0);
+                }
+            }
+            // add Row Total
+            array_push($dataRows[$key],$subTotalOfStatus);
+            // add Row Percentage
+            array_push($dataRows[$key],round(100*$subTotalOfStatus/$totalCount , 2));
+            $totalPercent += (100*$subTotalOfStatus/$totalCount);
+            $key = $key + 1;
+        }
+        // total percentage adding
+        $key = $key + 1;
+        $dataRows[$key] = array('Total');
+        foreach($statusData as $statusName){
+            if(array_key_exists($statusName,$total)){
+                array_push($dataRows[$key],$total[$statusName]);
+            } else {
+                array_push($dataRows[$key],0);
+            }
+        }
+        // add Total
+        array_push($dataRows[$key],$totalCount);
+        // add Percentage
+        array_push($dataRows[$key],round($totalPercent,2));
+
+        $downloadURL = Utility::writeExportZipExport("month_wise_report", $headerArr, $dataRows);
+        echo  $downloadURL;
+
+    } elseif($reportType == 'chart'){
+
+        if(empty($misData)){
+            $misData =  array(array(
+                "month_name" => 0,
+                "status_count" => 0,
+                "status_name" => 0
+            ));
+        }
+
+        //$dataChartElem = array();
+        $displayKey = 1;
+        $dataChart[$displayKey][] = "Month Name";
+
+        foreach($statusData as $statusName){
+            $dataChart[$displayKey][] = $statusName;
+        }
+        if(count($monthFormatData) > 0){
+            foreach($monthFormatData as $monthKey => $monthData){
+                $dataArrElem = array(
+                    "Month Name"                      => $monthKey,
+                );
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$monthData)){
+                        $dataArrElem[$statusName] = $monthData[$statusName];
+                    } else {
+                        $dataArrElem[$statusName] = 0;
+                    }
+                }
+                $dataChartElem = array();
+                foreach ($dataArrElem as $key => $value){
+                    $dataChartElem[] = ($key != "Month Name") ? (int) $value : $value;
+                }
+                $dataChart[] = $dataChartElem;
+
+            }
+        }
+
+
+        $response = array("success" => true, "report_data" =>$dataChart);
+        echo json_encode($response);
+    }
+
+}elseif ('segmentreport' == $action){
+    $data = $db->FilterParameters($_POST);
+
+    $statusId = (isset($data['status_id'])) ? $data['status_id']  : "";
+    $filterCreatedDate = (isset($data['created_date'])) ? $data['created_date']  : "";
+    $filterSegmentName = (isset($data['call_from'])) ? $data['call_from']  : "";
+    $reportType = (isset($data['report_type'])) ? $data['report_type']  : "";
+    $statusCondition = " status_type = 'support'";
+    $misCondition = 't.is_merged != 1';
+
+    if($statusId != ''){
+
+        $selectedStatus = implode(",",$statusId);
+        $misCondition .= " AND (sm.status_id in ($selectedStatus))";
+        $statusCondition .= " AND (status_id in ($selectedStatus))";
+    }
+
+    if($filterSegmentName != ''){
+        $filterSegmentName = implode("','",$filterSegmentName);
+        $misCondition .= " AND (t.call_from in ('$filterSegmentName'))";
+    }
+
+    if($filterCreatedDate != ''){
+        $date_range_str = $filterCreatedDate;
+        $date_range_arr = explode(" to ", $date_range_str);
+        $range_from = Core::DMYToYMD($date_range_arr[0]);
+        $range_to = Core::DMYToYMD($date_range_arr[1]);
+//    if($range_to == $range_from) {
+//        $range_to = date('Y-m-d', strtotime('+1 day', strtotime($range_to)));
+//    }
+        $dateCondition = ($range_to == $range_from) ? " date_format(t.created_at,'%Y-%m-%d') = '$range_from'" : "date_format(t.created_at,'%Y-%m-%d') >= '$range_from' AND date_format(t.created_at,'%Y-%m-%d') <= '$range_to'";
+
+        $misCondition .= " AND ($dateCondition)";
+    }
+
+    $mainTable = array("tickets as t",array("count(*) as number","t.call_from as segment"));
+    $joinTable = array(
+        array("left","status_master as sm","sm.status_id = t.status_id",array("sm.status_name as status")),
+    );
+    $misDisRes = $db->JoinFetch($mainTable,$joinTable,$misCondition,array("YEAR(t.created_at)"=>"asc","MONTH(t.created_at)"=>"asc"),null,
+        "IF(t.call_from IS NULL OR t.call_from = '', 0, t.call_from),
+    IF(t.status_id IS NULL OR t.status_id = '', 0, t.status_id)");
+    $misData = $db->FetchToArrayFromResultset($misDisRes);
+    $segmentFormatData = array();
+
+    $totalCount = 0;
+    $totalPercent = 0;
+    foreach($misData as $key => $value){
+        $totalCount = $totalCount + $value['number'];
+        $value['segment'] = ($value['segment'] != '') ?  $value['segment'] : "Blank";
+        $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+        $segmentFormatData[$value['segment']][$value['status']] = $value['number'];
+    }
+    $statusData = $db->FetchToArray("status_master",array("status_name"),$statusCondition,array("sort_order"=>"asc"));
+    $statusData = array_merge($statusData,array("Blank"));
+    if($reportType == 'html'){
+        if(count($segmentFormatData) > 0){
+            ?>
+            <table class="table" id="dg_mis">
+                <thead>
+                <th>Segment</th>
+                <?php
+                $total = array();
+                foreach($statusData as $statusName){ ?>
+                    <th><?php echo $statusName; ?></th>
+                <?php }?>
+                <th>Total</th>
+                <th>In %</th>
+                </thead>
+                <tbody>
+                <?php
+                if(count($segmentFormatData) > 0){
+                    foreach($segmentFormatData as $segmentKey => $segmentData){
+
+                        if($segmentKey != ''){
+                            ?>
+                            <tr>
+                                <td><?php echo $segmentKey; ?></td>
+
+                                <?php
+                                $subTotalOfStatus = 0;
+                                if(count($segmentData) > 0){
+
+                                    foreach($statusData as $statusName){
+
+                                        if(array_key_exists($statusName,$segmentData)){
+                                            $subTotalOfStatus += $segmentData[$statusName];
+                                            echo "<td class='te-number'>".$segmentData[$statusName]."</td>";
+                                            $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $segmentData[$statusName] : $segmentData[$statusName];
+                                        } else {
+                                            echo "<td>-</td>";
+                                        }
+                                    }
+                                }
+                                $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                                echo "<td class='te-number'>".$subTotalOfStatus."</td>";
+                                echo "<td class='te-number'>".round(100*$subTotalOfStatus/$totalCount , 2)."</td>";
+                                ?>
+                            </tr>
+                        <?php }?>
+                    <?php }?>
+                <?php } ?>
+                <?php
+                if(count($segmentFormatData) > 0){
+                    echo "<th colspan='1'>Total</th>";
+
+                    foreach($statusData as $statusName){
+                        if(array_key_exists($statusName,$total)){
+                            echo "<td class='te-number'><b>".$total[$statusName]."</b></td>";
+                        } else {
+
+                            echo "<td>-</td>";
+                        }
+                    }
+                    echo "<td class='te-number'><b>".$totalCount."</b></td>";
+                    echo "<td class='te-number'><b>".round($totalPercent,2)."%</b></td>";
+                }
+                ?>
+                </tbody>
+            </table>
+            <?php
+        } else {
+            echo "<div>
+                    <h3 class='col-xs-12' align='center'>
+                        <span style='color:#438EB9;'>No Result Found..</span>
+                    </h3>
+                </div>";
+        }
+    } elseif ($reportType == 'export'){
+        $total = array();
+        $headerArr = array(
+            "Segment",
+        );
+        foreach($statusData as $statusName){
+            array_push($headerArr,$statusName);
+        }
+        array_push($headerArr,"Total");
+        array_push($headerArr,"In %");
+        $dataRows = array();
+        $key = 0;
+
+        foreach($segmentFormatData as $segmentKey => $segmentData){
+            $dataRows[$key] = array($segmentKey);
+
+            $subTotalOfStatus = 0;
+            if(count($segmentData) > 0){
+
+                foreach($statusData as $statusName){
+
+                    if(array_key_exists($statusName,$segmentData)){
+                        $subTotalOfStatus += $segmentData[$statusName];
+                        array_push($dataRows[$key],$segmentData[$statusName]);
+                        $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $segmentData[$statusName] : $segmentData[$statusName];
+                    } else {
+                        array_push($dataRows[$key],0);
+                    }
+                }
+            }
+            // add Row Total
+            array_push($dataRows[$key],$subTotalOfStatus);
+            // add Row Percentage
+            array_push($dataRows[$key],round(100*$subTotalOfStatus/$totalCount , 2));
+            $totalPercent += (100*$subTotalOfStatus/$totalCount);
+            $key = $key + 1;
+       }
+
+        // total percentage adding
+        $key = $key + 1;
+        $dataRows[$key] = array('Total');
+        foreach($statusData as $statusName){
+            if(array_key_exists($statusName,$total)){
+                array_push($dataRows[$key],$total[$statusName]);
+            } else {
+                array_push($dataRows[$key],0);
+            }
+        }
+        // add Total
+        array_push($dataRows[$key],$totalCount);
+        // add Percentage
+        array_push($dataRows[$key],round($totalPercent,2));
+
+        $downloadURL = Utility::writeExportZipExport("segment_wise_report", $headerArr, $dataRows);
+        echo  $downloadURL;
+
+    } elseif($reportType == 'chart'){
+        if(empty($misData)){
+            $misData =  array(array(
+                "segment_name" => 0,
+                "status_count" => 0,
+                "status_name" => 0
+            ));
+        }
+
+        //$dataChartElem = array();
+        $displayKey = 1;
+        $dataChart[$displayKey][] = "Segment Name";
+
+        foreach($statusData as $statusName){
+            $dataChart[$displayKey][] = $statusName;
+        }
+        if(count($segmentFormatData) > 0){
+            foreach($segmentFormatData as $segmentKey => $segmentData){
+                $dataArrElem = array(
+                    "Segment Name"                      => $segmentKey,
+                );
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$segmentData)){
+                        $dataArrElem[$statusName] = $segmentData[$statusName];
+                    } else {
+                        $dataArrElem[$statusName] = 0;
+                    }
+                }
+                $dataChartElem = array();
+                foreach ($dataArrElem as $key => $value){
+                    $dataChartElem[] = ($key != "Segment Name") ? (int) $value : $value;
+                }
+                $dataChart[] = $dataChartElem;
+
+            }
+        }
+
+
+        $response = array("success" => true, "report_data" =>$dataChart);
+        echo json_encode($response);
+    }
+}elseif ('priorityreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $statusId = (isset($data['status_id'])) ? $data['status_id']  : "";
+    $filterCreatedDate = (isset($data['created_date'])) ? $data['created_date']  : "";
+    $filterQueryStageId = (isset($data['query_stage_id'])) ? $data['query_stage_id']  : "";
+    $filterReasonId = (isset($data['reason_id'])) ? $data['reason_id']  : "";
+    $filterPriorityId = (isset($data['query_type_id'])) ? $data['query_type_id']  : "";
+    $reportType = (isset($data['report_type'])) ? $data['report_type']  : "";
+
+    $statusCondition = " status_type = 'support'";
+    $misCondition = 't.is_merged != 1';
+
+    if($statusId != ''){
+
+        $selectedStatus = implode(",",$statusId);
+        $misCondition .= " AND (sm.status_id in ($selectedStatus))";
+        $statusCondition .= " AND (status_id in ($selectedStatus))";
+    }
+
+    if($filterPriorityId != ''){
+        $selectedPriority = implode(",",$filterPriorityId);
+        $misCondition .= " AND (t.query_type_id in ($selectedPriority))";
+    }
+
+    if($filterReasonId != ''){
+        $selectedReason = implode(",",$filterReasonId);
+        $misCondition .= " AND (t.reason_id in ($selectedReason))";
+    }
+
+    if($filterQueryStageId != ''){
+        $selectedQueryStage = implode(",",$filterQueryStageId);
+        $misCondition .= " AND (t.query_stage_id in ($selectedQueryStage))";
+    }
+
+    if($filterCreatedDate != ''){
+        $date_range_str = $filterCreatedDate;
+        $date_range_arr = explode(" to ", $date_range_str);
+        $range_from = Core::DMYToYMD($date_range_arr[0]);
+        $range_to = Core::DMYToYMD($date_range_arr[1]);
+//    if($range_to == $range_from) {
+//        $range_to = date('Y-m-d', strtotime('+1 day', strtotime($range_to)));
+//    }
+        $dateCondition = ($range_to == $range_from) ? " date_format(t.created_at,'%Y-%m-%d') = '$range_from'" : "date_format(t.created_at,'%Y-%m-%d') >= '$range_from' AND date_format(t.created_at,'%Y-%m-%d') <= '$range_to'";
+
+        $misCondition .= " AND ($dateCondition)";
+    }
+
+    $mainTable = array("tickets as t",array("count(*) as number,t.query_stage_id,t.reason_id"));
+    $joinTable = array(
+        array("left","status_master as sm","sm.status_id = t.status_id",array("sm.status_name as status")),
+        array("left","query_type_master as qtm","qtm.query_type_id = t.query_type_id",array("qtm.query_type_name as priority")),
+        array("left","query_stage_master as qsm","qsm.query_stage_id = t.query_stage_id",array("qsm.query_stage_name As query_stage")),
+        array("left","reason_master as rm","t.reason_id = rm.reason_id",array("rm.reason_name")),
+    );
+    $misDisRes = $db->JoinFetch($mainTable,$joinTable,$misCondition,array("YEAR(t.created_at)"=>"asc","MONTH(t.created_at)"=>"asc"),null,
+        "IF(t.query_type_id IS NULL OR t.query_type_id = '', 0, t.query_type_id),
+    IF(t.reason_id IS NULL OR t.reason_id = '', 0, t.reason_id),
+    IF(t.query_stage_id IS NULL OR t.query_stage_id = '', 0, t.query_stage_id),
+    IF(t.status_id IS NULL OR t.status_id = '', 0, t.status_id)");
+    $misData = $db->FetchToArrayFromResultset($misDisRes);
+    $priorityFormatData = array();
+
+    $totalCount = 0;
+    $totalPercent = 0;
+
+    foreach($misData as $key => $value){
+        $totalCount = $totalCount + $value['number'];
+        $value['priority'] = ($value['priority'] != '') ?  $value['priority'] : "Blank";
+        $value['query_stage'] = ($value['query_stage'] != '') ?  $value['query_stage'] : "Blank";
+        $value['reason_name'] = ($value['reason_name'] != '') ?  $value['reason_name'] : "Blank";
+        $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+        $value['query_stage'] = $value['query_stage_id']."@".$value['query_stage'];
+        $value['reason_name'] = $value['reason_id']."@".$value['reason_name'];
+        $priorityFormatData[$value['priority']][$value['reason_name']][$value['query_stage']][$value['status']] = $value['number'];
+    }
+    $statusData = $db->FetchToArray("status_master",array("status_name"),$statusCondition,array("sort_order"=>"asc"));
+    $statusData = array_merge($statusData,array("Blank"));
+
+    if($reportType == 'html'){
+        if(count($priorityFormatData) > 0){
+            ?>
+            <table class="table" id="dg_mis">
+                <thead>
+                <th>Priority</th>
+                <th>Reason</th>
+                <th>Query Stage</th>
+                <?php
+                $total = array();
+                foreach($statusData as $statusName){ ?>
+                    <th><?php echo $statusName; ?></th>
+                <?php }?>
+                <th>Total</th>
+                <th>In %</th>
+                </thead>
+                <tbody>
+                <?php
+                if(count($priorityFormatData) > 0){
+                    foreach($priorityFormatData as $priorityName => $reasonArray){
+                        $priorityDisplay = 1;
+                        foreach($reasonArray as $reasonName => $queryStageArray) {
+                            $reasonDisplay = 1;
+                            foreach ($queryStageArray as $queryStageName => $queryStageData) {
+                                if ($priorityName != '') {
+                                    ?>
+                                    <tr>
+
+                                        <td><?php echo ($priorityDisplay == 1) ? $priorityName : ""; ?></td>
+                                        <td><?php echo ($reasonDisplay == 1) ? trim(strstr($reasonName,"@"),"@") : ""; ?></td>
+                                        <td><?php echo trim(strstr($queryStageName,"@"),"@"); ?></td>
+
+                                        <?php
+                                        $subTotalOfStatus = 0;
+                                        if (count($queryStageData) > 0) {
+
+                                            foreach ($statusData as $statusName) {
+                                                if (is_array($queryStageData)) {
+                                                    if (array_key_exists($statusName, $queryStageData)) {
+                                                        $subTotalOfStatus += $queryStageData[$statusName];
+                                                        echo "<td class='te-number'>" . $queryStageData[$statusName] . "</td>";
+                                                        $total[$statusName] = (array_key_exists($statusName, $total)) ? $total[$statusName] + $queryStageData[$statusName] : $queryStageData[$statusName];
+                                                    } else {
+                                                        echo "<td>-</td>";
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                        $totalPercent += (100 * $subTotalOfStatus / $totalCount);
+                                        echo "<td class='te-number'>" . $subTotalOfStatus . "</td>";
+                                        echo "<td class='te-number'>" . round(100 * $subTotalOfStatus / $totalCount, 2) . "</td>";
+                                        ?>
+                                    </tr>
+                                <?php }
+                                $priorityDisplay = 0;
+                                $reasonDisplay = 0;
+                            }
+                        }
+                        ?>
+                    <?php }?>
+                <?php } ?>
+                <?php
+                if(count($priorityFormatData) > 0){
+                    echo "<th colspan='3'>Total</th>";
+
+                    foreach($statusData as $statusName){
+                        if(array_key_exists($statusName,$total)){
+                            echo "<td class='te-number'><b>".$total[$statusName]."</b></td>";
+                        } else {
+
+                            echo "<td>-</td>";
+                        }
+                    }
+                    echo "<td class='te-number'><b>".$totalCount."</b></td>";
+                    echo "<td class='te-number'><b>".round($totalPercent,2)."%</b></td>";
+                }
+                ?>
+                </tbody>
+            </table>
+            <?php
+        } else {
+            echo "<div>
+                    <h3 class='col-xs-12' align='center'>
+                        <span style='color:#438EB9;'>No Result Found..</span>
+                    </h3>
+                </div>";
+        }
+    } elseif ($reportType == 'export'){
+        $total = array();
+        $headerArr = array(
+            "Priority",
+            "Reason",
+            "Query Stage",
+        );
+        foreach($statusData as $statusName){
+            array_push($headerArr,$statusName);
+        }
+        array_push($headerArr,"Total");
+        array_push($headerArr,"In %");
+        $dataRows = array();
+        $key = 0;
+
+        foreach($priorityFormatData as $priorityName => $reasonArray){
+            $subTotalOfStatus = 0;
+
+            foreach($reasonArray as $reasonName => $queryStageArray) {
+
+                foreach ($queryStageArray as $queryStageName => $queryStageData) {
+                    $dataRows[$key] = $priorityName;
+                    array_push($dataRows[$key],trim(strstr($reasonName,"@"),"@"));
+                    if ($priorityName != '') {
+
+                        array_push($dataRows[$key],trim(strstr($queryStageName,"@"),"@"));
+
+                        if (count($queryStageData) > 0) {
+
+                            foreach ($statusData as $statusName) {
+                                if (is_array($queryStageData)) {
+                                    if (array_key_exists($statusName, $queryStageData)) {
+                                        $subTotalOfStatus += $queryStageData[$statusName];
+                                        array_push($dataRows[$key],$queryStageData[$statusName]);
+                                        $total[$statusName] = (array_key_exists($statusName, $total)) ? $total[$statusName] + $queryStageData[$statusName] : $queryStageData[$statusName];
+                                    } else {
+                                        array_push($dataRows[$key],0);
+                                    }
+                                }
+                            }
+                        }
+                        // add Row Total
+                        array_push($dataRows[$key],$subTotalOfStatus);
+                        // add Row Percentage
+                        array_push($dataRows[$key],round(100*$subTotalOfStatus/$totalCount , 2));
+                        $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                        $key = $key + 1;
+                    }
+                }$key = $key + 1;
+            }
+        }
+        // total percentage adding
+        $key = $key + 1;
+        $dataRows[$key] = array('Total','');
+        foreach($statusData as $statusName){
+            if(array_key_exists($statusName,$total)){
+                array_push($dataRows[$key],$total[$statusName]);
+            } else {
+                array_push($dataRows[$key],0);
+            }
+        }
+        // add Total
+        array_push($dataRows[$key],$totalCount);
+        // add Percentage
+        array_push($dataRows[$key],round($totalPercent,2));
+
+        $downloadURL = Utility::writeExportZipExport("priority_wise_report", $headerArr, $dataRows);
+        echo  $downloadURL;
+    } elseif($reportType == 'chart'){
+        $priorityFormatChartData = array();
+        foreach($misData as $key => $value){
+            if(isset($priorityFormatChartData[$value['priority']]) && in_array($priorityFormatChartData[$value['priority']],$priorityFormatChartData)){
+                if(array_key_exists($value['status'],$priorityFormatChartData[$value['priority']])){
+                    $priorityFormatChartData[$value['priority']][$value['status']] = $value['number'] + $priorityFormatChartData[$value['priority']][$value['status']];
+                } else {
+                    $priorityFormatChartData[$value['priority']][$value['status']] = $value['number'];
+                }
+            } else {
+                $priorityFormatChartData[$value['priority']][$value['status']] = $value['number'];
+            }
+        }
+
+        if(empty($misData)){
+            $misData =  array(array(
+                "priority_name" => 0,
+                "status_count" => 0,
+                "status_name" => 0
+            ));
+        }
+
+        //$dataChartElem = array();
+        $displayKey = 1;
+        $dataChart[$displayKey][] = "Priority Name";
+
+        foreach($statusData as $statusName){
+            $dataChart[$displayKey][] = $statusName;
+        }
+        if(count($priorityFormatChartData) > 0){
+            foreach($priorityFormatChartData as $priorityKey => $priorityData){
+                $dataArrElem = array(
+                    "Priority Name"                      => $priorityKey,
+                );
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$priorityData)){
+                        $dataArrElem[$statusName] = $priorityData[$statusName];
+                    } else {
+                        $dataArrElem[$statusName] = 0;
+                    }
+                }
+                $dataChartElem = array();
+                foreach ($dataArrElem as $key => $value){
+                    $dataChartElem[] = ($key != "Priority Name") ? (int) $value : $value;
+                }
+                $dataChart[] = $dataChartElem;
+            }
+        }
+
+        $response = array("success" => true, "report_data" =>$dataChart);
+        echo json_encode($response);
+    }
+}elseif ('bankreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $statusId = (isset($data['status_id'])) ? $data['status_id']  : "";
+    $filterCreatedDate = (isset($data['created_date'])) ? $data['created_date']  : "";
+    $filterQueryStageId = (isset($data['query_stage_id'])) ? $data['query_stage_id']  : "";
+    $filterReasonId = (isset($data['reason_id'])) ? $data['reason_id']  : "";
+    $filterBankId = (isset($data['bank_id'])) ? $data['bank_id']  : "";
+    $reportType = (isset($data['report_type'])) ? $data['report_type']  : "";
+
+
+    $statusCondition = " status_type = 'support'";
+    $misCondition = 'sm.status_id is not null and t.is_merged != 1';
+
+    if($statusId != ''){
+
+        $selectedStatus = implode(",",$statusId);
+        $misCondition .= " AND (sm.status_id in ($selectedStatus))";
+        $statusCondition .= " AND (status_id in ($selectedStatus))";
+    }
+
+    if($filterBankId != ''){
+        $selectedBank = implode(",",$filterBankId);
+        $misCondition .= " AND (t.bank_id in ($selectedBank))";
+    }
+
+    if($filterReasonId != ''){
+        $selectedReason = implode(",",$filterReasonId);
+        $misCondition .= " AND (t.reason_id in ($selectedReason))";
+    }
+
+    if($filterQueryStageId != ''){
+        $selectedQueryStage = implode(",",$filterQueryStageId);
+        $misCondition .= " AND (t.query_stage_id in ($selectedQueryStage))";
+    }
+
+    if($filterCreatedDate != ''){
+        $date_range_str = $filterCreatedDate;
+        $date_range_arr = explode(" to ", $date_range_str);
+        $range_from = Core::DMYToYMD($date_range_arr[0]);
+        $range_to = Core::DMYToYMD($date_range_arr[1]);
+//    if($range_to == $range_from) {
+//        $range_to = date('Y-m-d', strtotime('+1 day', strtotime($range_to)));
+//    }
+        $dateCondition = ($range_to == $range_from) ? " date_format(t.created_at,'%Y-%m-%d') = '$range_from'" : "date_format(t.created_at,'%Y-%m-%d') >= '$range_from' AND date_format(t.created_at,'%Y-%m-%d') <= '$range_to'";
+
+        $misCondition .= " AND ($dateCondition)";
+    }
+
+    $mainTable = array("tickets as t",array("count(*) as number,t.query_stage_id,t.reason_id"));
+    $joinTable = array(
+        array("left","status_master as sm","sm.status_id = t.status_id",array("sm.status_name as status")),
+        array("left","query_stage_master as qsm","qsm.query_stage_id = t.query_stage_id",array("qsm.query_stage_name As query_stage")),
+        array("left","reason_master as rm","rm.reason_id = t.reason_id",array("rm.reason_name As reason_name")),
+        array("left","bank_master as bm","bm.bank_id = t.bank_id",array("bm.bank_name As bank_name")),
+    );
+    $misDisRes = $db->JoinFetch($mainTable,$joinTable,$misCondition,array("YEAR(t.created_at)"=>"asc","MONTH(t.created_at)"=>"asc"),null,
+        "IF(t.bank_id IS NULL OR t.bank_id = '', 0, t.bank_id),
+    IF(t.reason_id IS NULL OR t.reason_id = '', 0, t.reason_id),
+    IF(t.query_stage_id IS NULL OR t.query_stage_id = '', 0, t.query_stage_id),
+    IF(t.status_id IS NULL OR t.status_id = '', 0, t.status_id)");
+    $misData = $db->FetchToArrayFromResultset($misDisRes);
+    $bankFormatData = array();
+
+    $totalCount = 0;
+    $totalPercent = 0;
+
+    foreach($misData as $key => $value){
+        $totalCount = $totalCount + $value['number'];
+        $value['bank_name'] = ($value['bank_name'] != '') ? $value['bank_name'] : "Blank";
+        $value['query_stage'] = ($value['query_stage'] != '') ?  $value['query_stage'] : "Blank";
+        $value['reason_name'] = ($value['reason_name'] != '') ?  $value['reason_name'] : "Blank";
+        $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+        $value['query_stage'] = $value['query_stage_id']."@".$value['query_stage'];
+        $value['reason_name'] = $value['reason_id']."@".$value['reason_name'];
+        $bankFormatData[$value['bank_name']][$value['reason_name']][$value['query_stage']][$value['status']] = $value['number'];
+    }
+    $statusData = $db->FetchToArray("status_master",array("status_name"),$statusCondition,array("sort_order"=>"asc"));
+    $statusData = array_merge($statusData,array("Blank"));
+
+    if($reportType == 'html'){
+        if(count($bankFormatData) > 0){
+            ?>
+            <table class="table" id="dg_mis">
+                <thead>
+                <th>Bank Name</th>
+                <th>Reason Name</th>
+                <th>Query Stage</th>
+                <?php
+                $total = array();
+                foreach($statusData as $statusName){ ?>
+                    <th><?php echo $statusName; ?></th>
+                <?php } ?>
+                <th>Total</th>
+                <th>In %</th>
+                </thead>
+                <tbody>
+                <?php
+                if(count($bankFormatData) > 0){
+                    foreach($bankFormatData as $bankName => $reasonData){
+                        $bankDisplay = 1;
+                        ?>
+                        <?php
+                        foreach($reasonData as $reasonName => $queryStageData){
+                            $reasonDisplay = 1;
+                            foreach($queryStageData as $queryStageName => $stageStatusData){
+
+                                if($reasonName != ''){ ?>
+                                    <tr>
+                                        <td><?php echo ($bankDisplay == 1) ? $bankName : ""; ?></td>
+                                        <td><?php echo ($reasonDisplay == 1) ? trim(strstr($reasonName,"@"),"@") : ""; ?></td>
+                                        <td><?php echo trim(strstr($queryStageName,"@"),"@"); ?></td>
+
+                                        <?php
+                                        $subTotalOfStatus = 0;
+                                        if(count($stageStatusData) > 0){
+                                            foreach($statusData as $statusName){
+                                                if(array_key_exists($statusName,$stageStatusData)){
+                                                    $subTotalOfStatus += $stageStatusData[$statusName];
+                                                    echo "<td class='te-number'>".$stageStatusData[$statusName]."</td>";
+                                                    $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $stageStatusData[$statusName] : $stageStatusData[$statusName];
+                                                } else {
+                                                    echo "<td>-</td>";
+                                                }
+                                            }
+                                        }
+                                        $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                                        echo "<td class='te-number'>".$subTotalOfStatus."</td>";
+                                        echo "<td class='te-number'>".round(100*$subTotalOfStatus/$totalCount , 2)."</td>";
+                                        ?>
+                                    </tr>
+                                <?php }?>
+                                <?php
+                                $bankDisplay = 0;
+                                $reasonDisplay = 0;
+                            }
+                            ?>
+                            <?php
+                        }?>
+                    <?php }?>
+                <?php } ?>
+                <?php
+                if(count($bankFormatData) > 0){
+                    echo "<th colspan='3'>Total</th>";
+
+                    foreach($statusData as $statusName){
+                        if(array_key_exists($statusName,$total)){
+                            echo "<td class='te-number'><b>".$total[$statusName]."</b></td>";
+                        } else {
+
+                            echo "<td>-</td>";
+                        }
+                    }
+                    echo "<td class='te-number'><b>".$totalCount."</b></td>";
+                    echo "<td class='te-number'><b>".round($totalPercent,2)."%</b></td>";
+                }
+                ?>
+                </tbody>
+            </table>
+            <?php
+        } else {
+            echo "<div>
+                    <h3 class='col-xs-12' align='center'>
+                        <span style='color:#438EB9;'>No Result Found..</span>
+                    </h3>
+                </div>";
+        }
+    } elseif ($reportType == 'export'){
+        $objPHPExcel = new PHPExcel();
+
+        $file_name = 'activity_log_'.DATE_TIME_INDIAN.'.xls';
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="'.$file_name.'"');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+    } elseif($reportType == 'chart'){
+        $bankFormatChartData = array();
+        foreach($misData as $key => $value){
+            $totalCount = $totalCount + $value['number'];
+            $value['bank_name'] = ($value['bank_name'] != '') ? $value['bank_name'] : "Blank";
+            $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+            if(isset($bankFormatChartData[$value['bank_name']]) && in_array($bankFormatChartData[$value['bank_name']],$bankFormatChartData)){
+                if(array_key_exists($value['status'],$bankFormatChartData[$value['bank_name']])){
+                    $bankFormatChartData[$value['bank_name']][$value['status']] = $value['number'] + $bankFormatChartData[$value['bank_name']][$value['status']];
+                } else {
+                    $bankFormatChartData[$value['bank_name']][$value['status']] = $value['number'];
+                }
+            } else {
+                $bankFormatChartData[$value['bank_name']][$value['status']] = $value['number'];
+            }
+        }
+
+        if(empty($misData)){
+            $misData =  array(array(
+                "bank_name" => 0,
+                "status_count" => 0,
+                "status_name" => 0
+            ));
+        }
+
+        //$dataChartElem = array();
+        $displayKey = 1;
+        $dataChart[$displayKey][] = "Bank Name";
+
+        foreach($statusData as $statusName){
+            $dataChart[$displayKey][] = $statusName;
+        }
+        if(count($bankFormatChartData) > 0){
+            foreach($bankFormatChartData as $bankKey => $bankData){
+
+                $dataArrElem = array(
+                    "Bank Name"                      => $bankKey,
+                );
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$bankData)){
+                        $dataArrElem[$statusName] = $bankData[$statusName];
+                    } else {
+                        $dataArrElem[$statusName] = 0;
+                    }
+                }
+                $dataChartElem = array();
+                foreach ($dataArrElem as $key => $value){
+                    $dataChartElem[] = ($key != "Bank Name") ? (int) $value : $value;
+                }
+                $dataChart[] = $dataChartElem;
+            }
+        }
+        $response = array("success" => true, "report_data" =>$dataChart);
+        echo json_encode($response);
+    }
+}elseif ('reasonreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $statusId = (isset($data['status_id'])) ? $data['status_id']  : "";
+    $filterCreatedDate = (isset($data['created_date'])) ? $data['created_date']  : "";
+    $filterQueryStageId = (isset($data['query_stage_id'])) ? $data['query_stage_id']  : "";
+    $filterReasonId = (isset($data['reason_id'])) ? $data['reason_id']  : "";
+    $reportType = (isset($data['report_type'])) ? $data['report_type']  : "";
+
+    $statusCondition = " status_type = 'support'";
+    $misCondition = 't.is_merged != 1';
+
+    if($statusId != ''){
+
+        $selectedStatus = implode(",",$statusId);
+        $misCondition .= " AND (sm.status_id in ($selectedStatus))";
+        $statusCondition .= " AND (status_id in ($selectedStatus))";
+    }
+
+    if($filterReasonId != ''){
+        $selectedReason = implode(",",$filterReasonId);
+        $misCondition .= " AND (t.reason_id in ($selectedReason))";
+    }
+
+    if($filterQueryStageId != ''){
+        $selectedQueryStage = implode(",",$filterQueryStageId);
+        $misCondition .= " AND (t.query_stage_id in ($selectedQueryStage))";
+    }
+
+    if($filterCreatedDate != ''){
+        $date_range_str = $filterCreatedDate;
+        $date_range_arr = explode(" to ", $date_range_str);
+        $range_from = Core::DMYToYMD($date_range_arr[0]);
+        $range_to = Core::DMYToYMD($date_range_arr[1]);
+//    if($range_to == $range_from) {
+//        $range_to = date('Y-m-d', strtotime('+1 day', strtotime($range_to)));
+//    }
+        $dateCondition = ($range_to == $range_from) ? " date_format(t.created_at,'%Y-%m-%d') = '$range_from'" : "date_format(t.created_at,'%Y-%m-%d') >= '$range_from' AND date_format(t.created_at,'%Y-%m-%d') <= '$range_to'";
+
+        $misCondition .= " AND ($dateCondition)";
+    }
+
+    $mainTable = array("tickets as t",array("count(*) as number,t.query_stage_id,t.reason_id,t.status_id"));
+    $joinTable = array(
+        array("left","status_master as sm","sm.status_id = t.status_id",array("sm.status_name as status")),
+        array("left","reason_master as rm","rm.reason_id = t.reason_id",array("rm.reason_name As reason_name")),
+        array("left","query_stage_master as qsm","qsm.query_stage_id = t.query_stage_id",array("qsm.query_stage_name As query_stage")),
+    );
+    $misDisRes = $db->JoinFetch($mainTable,$joinTable,$misCondition,array("YEAR(t.created_at)"=>"asc","MONTH(t.created_at)"=>"asc"),null,
+        "IF(t.reason_id IS NULL OR t.reason_id = '', 0, t.reason_id),
+    IF(t.query_stage_id IS NULL OR t.query_stage_id = '', 0, t.query_stage_id),
+    IF(t.status_id IS NULL OR t.status_id = '', 0, t.status_id)");
+    $misData = $db->FetchToArrayFromResultset($misDisRes);
+    $reasonFormatData = array();
+
+    $totalCount = 0;
+    $totalPercent = 0;
+
+    foreach($misData as $key => $value){
+        $totalCount = $totalCount + $value['number'];
+        $value['query_stage'] = ($value['query_stage'] != '') ?  $value['query_stage'] : "Blank";
+        $value['reason_name'] = ($value['reason_name'] != '') ?  $value['reason_name'] : "Blank";
+        $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+        $value['query_stage'] = $value['query_stage_id']."@".$value['query_stage'];
+        $value['reason_name'] = $value['reason_id']."@".$value['reason_name'];
+        $reasonFormatData[$value['reason_name']][$value['query_stage']][$value['status']] = $value['number'];
+    }
+    $statusData = $db->FetchToArray("status_master",array("status_name"),$statusCondition,array("sort_order"=>"asc"));
+    $statusData = array_merge($statusData,array("Blank"));
+
+    if($reportType == 'html'){
+        if(count($reasonFormatData) > 0){
+            ?>
+            <table class="table" id="dg_mis">
+                <thead>
+                <th>Reason</th>
+                <th>Query Stage</th>
+                <?php
+                $total = array();
+                foreach($statusData as $statusName){ ?>
+                    <th><?php echo $statusName; ?></th>
+                <?php }?>
+                <th>Total</th>
+                <th>In %</th>
+                </thead>
+                <tbody>
+                <?php
+                if(count($reasonFormatData) > 0){
+
+                    foreach($reasonFormatData as $reasonName => $reasonData){
+                        $reasonDisplay = 1;
+                        foreach($reasonData as $queryStageName => $queryStageData){
+                            if($reasonName != ''){
+                                ?>
+                                <tr>
+                                    <td><?php echo ($reasonDisplay == 1) ? trim(strstr($reasonName,"@"),"@") : ""; ?></td>
+                                    <td><?php echo trim(strstr($queryStageName,"@"),"@"); ?></td>
+                                    <?php
+                                    $subTotalOfStatus = 0;
+                                    if(count($queryStageData) > 0){
+
+                                        foreach($statusData as $statusName){
+
+                                            if(array_key_exists($statusName,$queryStageData)){
+                                                $subTotalOfStatus += $queryStageData[$statusName];
+                                                echo "<td class='te-number'>".$queryStageData[$statusName]."</td>";
+                                                $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $queryStageData[$statusName] : $queryStageData[$statusName];
+                                            } else {
+                                                echo "<td>-</td>";
+                                            }
+                                        }
+                                    }
+                                    $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                                    echo "<td class='te-number'>".$subTotalOfStatus."</td>";
+                                    echo "<td class='te-number'>".round(100*$subTotalOfStatus/$totalCount , 2)."</td>";
+                                    ?>
+                                </tr>
+                            <?php }
+                            $reasonDisplay = 0;
+                        } ?>
+                    <?php } ?>
+                <?php } ?>
+                <?php
+                if(count($reasonFormatData) > 0){
+                    echo "<th colspan='2'>Total</th>";
+
+                    foreach($statusData as $statusName){
+                        if(array_key_exists($statusName,$total)){
+                            echo "<td class='te-number'><b>".$total[$statusName]."</b></td>";
+                        } else {
+
+                            echo "<td>-</td>";
+                        }
+                    }
+                    echo "<td class='te-number'><b>".$totalCount."</b></td>";
+                    echo "<td class='te-number'><b>".round($totalPercent,2)."%</b></td>";
+                }
+                ?>
+                </tbody>
+            </table>
+            <?php
+        } else {
+            echo "<div>
+                    <h3 class='col-xs-12' align='center'>
+                        <span style='color:#438EB9;'>No Result Found..</span>
+                    </h3>
+                </div>";
+        }
+    } elseif ($reportType == 'export'){
+
+        $total = array();
+        $headerArr = array(
+            "Reason",
+            "Query Stage",
+        );
+        foreach($statusData as $statusName){
+            array_push($headerArr,$statusName);
+        }
+        array_push($headerArr,"Total");
+        array_push($headerArr,"In %");
+        $dataRows = array();
+        $key = 0;
+        foreach($reasonFormatData as $reasonName => $reasonData){
+            $subTotalOfStatus = 0;
+            foreach($reasonData as $queryStageName => $queryStageData){
+                $dataRows[$key] = array(trim(strstr($reasonName,"@"),"@"));
+                if($reasonName != ''){
+                    array_push($dataRows[$key],trim(strstr($queryStageName,"@"),"@"));
+
+                    $subTotalOfStatus = 0;
+                    if(count($queryStageData) > 0){
+
+                        foreach($statusData as $statusName){
+
+                            if(array_key_exists($statusName,$queryStageData)){
+                                $subTotalOfStatus += $queryStageData[$statusName];
+                                array_push($dataRows[$key],$queryStageData[$statusName]);
+                                $total[$statusName] = (array_key_exists($statusName,$total)) ? $total[$statusName] + $queryStageData[$statusName] : $queryStageData[$statusName];
+                            } else {
+                                array_push($dataRows[$key],0);
+                            }
+                        }
+                    }
+                    // add Row Total
+                    array_push($dataRows[$key],$subTotalOfStatus);
+                    // add Row Percentage
+                    array_push($dataRows[$key],round(100*$subTotalOfStatus/$totalCount , 2));
+                    $totalPercent += (100*$subTotalOfStatus/$totalCount);
+                    $key = $key + 1;
+                }
+
+            }
+         }
+        // total percentage adding
+        $key = $key + 1;
+        $dataRows[$key] = array('Total','');
+        foreach($statusData as $statusName){
+            if(array_key_exists($statusName,$total)){
+                array_push($dataRows[$key],$total[$statusName]);
+            } else {
+                array_push($dataRows[$key],0);
+            }
+        }
+        // add Total
+        array_push($dataRows[$key],$totalCount);
+        // add Percentage
+        array_push($dataRows[$key],round($totalPercent,2));
+
+        $downloadURL = Utility::writeExportZipExport("reason_wise_report", $headerArr, $dataRows);
+        echo  $downloadURL;
+
+    } elseif($reportType == 'chart'){
+        $reasonFormatChartData = array();
+        foreach($misData as $key => $value){
+            $totalCount = $totalCount + $value['number'];
+            $value['reason_name'] = ($value['reason_name'] != '') ?  $value['reason_name'] : "Blank";
+            $value['status'] = ($value['status'] != '') ?  $value['status'] : "Blank";
+            if(isset($reasonFormatChartData[$value['reason_name']]) && in_array($reasonFormatChartData[$value['reason_name']],$reasonFormatChartData)){
+                if(array_key_exists($value['status'],$reasonFormatChartData[$value['reason_name']])){
+                    $reasonFormatChartData[$value['reason_name']][$value['status']] = $value['number'] + $reasonFormatChartData[$value['reason_name']][$value['status']];
+                } else {
+                    $reasonFormatChartData[$value['reason_name']][$value['status']] = $value['number'];
+                }
+            } else {
+                $reasonFormatChartData[$value['reason_name']][$value['status']] = $value['number'];
+            }
+        }
+
+        if(empty($misData)){
+            $misData =  array(array(
+                "reason_name" => 0,
+                "status_count" => 0,
+                "status_name" => 0
+            ));
+        }
+
+        //$dataChartElem = array();
+        $displayKey = 1;
+        $dataChart[$displayKey][] = "Reason Name";
+
+        foreach($statusData as $statusName){
+            $dataChart[$displayKey][] = $statusName;
+        }
+        if(count($reasonFormatChartData) > 0){
+            foreach($reasonFormatChartData as $reasonKey => $reasonData){
+                $dataArrElem = array(
+                    "Reason Name"                      => $reasonKey,
+                );
+
+                foreach($statusData as $statusName){
+                    if(array_key_exists($statusName,$reasonData)){
+                        $dataArrElem[$statusName] = $reasonData[$statusName];
+                    } else {
+                        $dataArrElem[$statusName] = 0;
+                    }
+                }
+                $dataChartElem = array();
+                foreach ($dataArrElem as $key => $value){
+                    $dataChartElem[] = ($key != "Reason Name") ? (int) $value : $value;
+                }
+                $dataChart[] = $dataChartElem;
+            }
+        }
+
+        $response = array("success" => true, "report_data" =>$dataChart);
+        echo json_encode($response);
+    }
+}
+include_once 'footer.php';
