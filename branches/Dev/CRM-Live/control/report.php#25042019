@@ -1,0 +1,368 @@
+<?php
+include_once 'header.php';
+include_once '../core/Validator.php';
+
+$table = "prospect_master";
+$table_id = 'prospect_id';
+$user_id = $ses->Get("user_id");
+$action = $db->FilterParameters($_GET['act']);
+if('telecaller' === $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $categoryId = (isset($data['category_id'])) ? $data['category_id']  : "";
+    $cityId = (isset($data['city_id'])) ? $data['city_id']  : "";
+    $userId = (isset($data['tele_caller_id'])) ? $data['tele_caller_id']  : "";
+    $mainTable = array("activity_master as am",array("concat(u.first_name,' ',u.last_name) as user_name",'count(am.activity_id) as call_count',"u.user_id"));
+    $joinTable = array(
+        array("left","prospect_master as pm","pm.prospect_id = am.type_id"),
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","category_master as catm","catm.category_id = pm.category_id"),
+        array("left","admin_user as u","u.user_id = am.created_by"),
+        array("left","city as c","c.city_id = pm.city_id")
+
+    );
+    $condition = ($userId != '') ? "am.created_by = '{$userId}'" : "1=1";
+    $leadCountCondition = '1=1';
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $leadCountCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(am.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $leadCountCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+        $leadCountCondition .= " and cm.campaign_id in ($cIds)";
+    }
+
+    if($categoryId != ''){
+        if(is_array($categoryId)){
+            $catIds = implode(",",$categoryId);
+        } else {
+            $catIds = $categoryId;
+        }
+        $condition .= " and catm.category_id in ($catIds)";
+        $leadCountCondition .= " and catm.category_id in ($catIds)";
+
+    }
+
+    if($cityId != ''){
+        if(is_array($cityId)){
+            $cityIds = implode(",",$cityId);
+        } else {
+            $cityIds = $cityId;
+        }
+        $condition .= " and c.city_id in ($cityIds)";
+        $leadCountCondition .= " and c.city_id in ($cityIds)";
+    }
+
+    $userWiseQ = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(am.activity_id)"=>"desc"),null,"u.user_id");
+    $userWiseRes = $db->FetchToArrayFromResultset($userWiseQ);
+
+    if(empty($userWiseRes)){
+        $userWiseRes =  array(array(
+            "user_name" => 0,
+            "call_count" => 0,
+            "user_id" => 0
+        ));
+    }
+        if(count($userWiseRes) > 0){
+        foreach ($userWiseRes as $userData){
+            $LCondition = $leadCountCondition." and lm.created_by = '{$userData['user_id']}'";
+            $callToLead = Utility::userCount("lead_count",$LCondition);
+            $dataArrElem = array(
+                "User Name"                      => $userData['user_name'],
+                "User Count"                         => $userData['call_count'],
+                "Lead Count"                         => $callToLead,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "User Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+    //core::PrintArray($dataChartElem);
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+} elseif('cityreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $cityId = (isset($data['city_id'])) ? $data['city_id']  : "";
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $categoryId = (isset($data['category_id'])) ? $data['category_id']  : "";
+    $mainTable = array("prospect_master as pm",array("c.city_name",'count(*) as city_count',"c.city_id"));
+    $joinTable = array(
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","category_master as catm","catm.category_id = pm.category_id"),
+        array("left","city as c","c.city_id = pm.city_id")
+
+    );
+    $condition = ($cityId != '') ? "c.city_id = '{$cityId}'" : "1=1";
+    $cityCountCondition = '1=1';
+    $leadCountCondition = '1=1';
+    $prospectCondition = ' and 1=1';
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (pm.DATE_FORMAT(pm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $cityCountCondition .= " && (DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $leadCountCondition .= " && (lm.DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (pm.DATE_FORMAT(pm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(pm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $cityCountCondition .= " && (DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $leadCountCondition .= " && (lm.DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+        $leadCountCondition .= " and cm.campaign_id in ($cIds)";
+        $prospectCondition .= " and campaign_id in ($cIds)";
+    }
+
+    if($categoryId != ''){
+        if(is_array($categoryId)){
+            $catIds = implode(",",$categoryId);
+        } else {
+            $catIds = $categoryId;
+        }
+        $condition .= " and catm.category_id in ($catIds)";
+        $leadCountCondition .= " and catm.category_id in ($catIds)";
+        $prospectCondition .= " and category_id in ($catIds)";
+    }
+
+    $cityWiseQ = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),array(0,10),"c.city_id");
+    $cityWiseRes = $db->FetchToArrayFromResultset($cityWiseQ);
+    if(empty($cityWiseRes)){
+        $cityWiseRes =  array(array(
+            "city_name" => 0,
+            "city_count" => 0,
+            "city_id" => 0
+        ));
+    }
+
+    if(count($cityWiseRes) > 0){
+        foreach ($cityWiseRes as $cityData){
+            $cCondition = $cityCountCondition." && type_id in (select prospect_id from prospect_master where city_id = '{$cityData['city_id']}' $prospectCondition) AND source_type = 'prospect'";
+            $cityCall = Utility::userCount("call",$cCondition);
+            $LCondition = $leadCountCondition." and lm.city_id = '{$cityData['city_id']}'";
+            $callToLead = Utility::userCount("lead_count",$LCondition);
+            $dataArrElem = array(
+                "City Name"                      => $cityData['city_name'],
+                "City Count"                         => $cityData['city_count'],
+                "City Lead"                         => $callToLead,
+                "City Call"                         => $cityCall,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "City Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+    //core::PrintArray($dataChartElem);
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}elseif('leadreport' == $action){
+    $data = $db->FilterParameters($_POST);
+
+    $condition = "1=1";
+    $leadCondition = "1=1";
+
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $leadCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') = '$rangeFrom')";
+            $range_condition = " && (DATE_FORMAT(created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $leadCondition .= " && (DATE_FORMAT(lm.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(lm.created_at,'%Y-%m-%d') <= '$rangeTo')";
+            $range_condition = " && (DATE_FORMAT(created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    $leadRes =  array(
+        "Total Prospect" =>  Utility::userCount("prospect",$condition),
+        "Total Call" =>  Utility::userCount("call",$condition." group by type_id"),
+        "Total Lead" =>  Utility::userCount("lead_count",$leadCondition),
+    );
+
+    if(count($leadRes) > 0){
+        foreach ($leadRes as $label => $leadData){
+            $dataArrElem = array(
+                $label                      => $leadData,
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+
+                $dataChartElem[] = $key;
+                $dataChartElem[] = (int) $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+    //core::PrintArray($dataChartElem);
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}elseif('dispositionreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+    $dispositionId = (isset($data['disposition_id'])) ? $data['disposition_id']  : "";
+
+    $condition = "am.is_latest = 1 and source_type = 'prospect'";
+
+    if($dispositionId != ''){
+        if(is_array($dispositionId)){
+            $dIds = implode(",",$dispositionId);
+        } else {
+            $dIds = $dispositionId;
+        }
+        $condition .= " and dm.disposition_id in ($dIds)";
+    }
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+    }
+
+
+    if(isset($data['date']) && $data['date'] != ''){
+        $date_range_str = $data['date'];
+        $date_range_arr = explode(" to ", $date_range_str);
+        $rangeFrom = Core::DMYToYMD($date_range_arr[0]);
+        $rangeTo = Core::DMYToYMD($date_range_arr[1]);
+        if($rangeFrom == $rangeTo){
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') = '$rangeFrom')";
+        } else {
+            $range_condition = " && (DATE_FORMAT(am.created_at,'%Y-%m-%d') >= '$rangeFrom' AND DATE_FORMAT(am.created_at,'%Y-%m-%d') <= '$rangeTo')";
+        }
+        $condition .= $range_condition;
+
+    }
+
+    $mainTable = array("activity_master as am",array("dm.disposition_name",'count(*) as disposition_count'));
+    $joinTable = array(
+        array("left","prospect_master as pm","pm.prospect_id = am.type_id"),
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id"),
+        array("left","disposition_master as dm","dm.disposition_id = am.disposition_id")
+    );
+
+    $dispositionRes = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),null,"dm.disposition_id");
+    $dispositionWiseData = $db->FetchToArrayFromResultset($dispositionRes);
+    if(empty($dispositionWiseData)){
+        $dispositionWiseData =  array(array(
+            "disposition_name" => 0,
+            "disposition_count" => 0
+        ));
+    }
+
+    if(count($dispositionWiseData) > 0){
+        foreach ($dispositionWiseData as $dispositionData){
+            $dataArrElem = array(
+                "Disposition Name"                      => $dispositionData['disposition_name'],
+                "Disposition Count"                         => $dispositionData['disposition_count']
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "Disposition Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}
+elseif('campaignreport' == $action){
+    $data = $db->FilterParameters($_POST);
+    $campaignId = (isset($data['campaign_id'])) ? $data['campaign_id']  : "";
+
+    $condition = "1=1";
+
+
+    if($campaignId != ''){
+        if(is_array($campaignId)){
+            $cIds = implode(",",$campaignId);
+        } else {
+            $cIds = $campaignId;
+        }
+        $condition .= " and cm.campaign_id in ($cIds)";
+    }
+
+
+    $mainTable = array("prospect_master as pm",array("cm.campaign_name",'count(*) as campaign_count'));
+    $joinTable = array(
+        array("left","campaign_master as cm","cm.campaign_id = pm.campaign_id")
+
+    );
+    $campaignRes = $db->JoinFetch($mainTable,$joinTable,$condition,array("count(*)"=>"desc"),array(0,10),"cm.campaign_id");
+    $campaignWiseData = $db->FetchToArrayFromResultset($campaignRes);
+    if(empty($campaignWiseData)){
+        $campaignWiseData =  array(array(
+            "campaign_name" => 0,
+            "campaign_count" => 0
+        ));
+    }
+
+    if(count($campaignWiseData) > 0){
+        foreach ($campaignWiseData as $campaignData){
+            $dataArrElem = array(
+                "campaign Name"                      => $campaignData['campaign_name'],
+                "campaign Count"                         => $campaignData['campaign_count']
+            );
+            $dataChartElem = array();
+            foreach ($dataArrElem as $key => $value){
+                $value = ($value == '') ? "other" : $value;
+                $dataChartElem[] = ($key != "campaign Name") ? (int) $value : $value;
+            }
+            $dataChart[] = $dataChartElem;
+        }
+    }
+
+    $response = array("success" => true, "report_data" =>$dataChart);
+    echo json_encode($response);
+
+}
+include_once 'footer.php';
