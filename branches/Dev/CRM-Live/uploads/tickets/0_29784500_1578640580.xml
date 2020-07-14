@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ns2:FORM3CB xmlns:ns2="http://incometaxindiaefiling.gov.in/F3CB" xmlns="http://incometaxindiaefiling.gov.in/common" xmlns:ns3="http://incometaxindiaefiling.gov.in/F3CD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<ns2:F3CB>
+		<CreationInfo>
+			<SWVersionNo>1.0</SWVersionNo>
+			<SWCreatedBy>DIT-JAVA</SWCreatedBy>
+			<XMLCreatedBy>DIT-JAVA</XMLCreatedBy>
+			<XMLCreationDate>2017-10-18</XMLCreationDate>
+			<IntermediaryCity>Delhi</IntermediaryCity>
+		</CreationInfo>
+		<Form_Details>
+			<FormName>FORM3CB</FormName>
+			<Description>Audit report under section 44AB of the
+				Income-tax Act,1961,In a case where the accounts of the business or
+				profession of a person have been audited under any other law
+			</Description>
+			<AssessmentYear>2017</AssessmentYear>
+			<SchemaVer>Ver2.0</SchemaVer>
+			<FormVer>1.2</FormVer>
+		</Form_Details>
+		<ns2:Declaration>
+			<ns2:Point1>
+				<ns2:I_We>I</ns2:I_We>
+				<ns2:Year>2017</ns2:Year>
+				<ns2:TypeOfAccount>Profit and loss account</ns2:TypeOfAccount>
+				<ns2:StartDate>2016-04-01</ns2:StartDate>
+				<ns2:EndDate>2017-03-31</ns2:EndDate>
+				<ns2:AssesseeName>
+				<ns2:FirstName>Jimeshkumar</ns2:FirstName>
+				<ns2:MiddleName>Ajitbhai</ns2:MiddleName>
+				<ns2:LastName>Paresh</ns2:LastName>
+				</ns2:AssesseeName>
+				<ns2:AddressDetail>
+						<ns2:AddrDetail1>M/s. Modern Handkerchief Works</ns2:AddrDetail1>
+						<ns2:AddrDetail2>Mangnath Raod</ns2:AddrDetail2>
+						<ns2:CityOrTownOrDistrict>Junagadh</ns2:CityOrTownOrDistrict>
+						<ns2:StateCode>11</ns2:StateCode>
+						<ns2:PinCode>362001</ns2:PinCode>
+				</ns2:AddressDetail>
+				<ns2:PAN>ACRPP1652Q</ns2:PAN>
+			</ns2:Point1>
+			<ns2:Point2>
+				<ns2:I_We>I</ns2:I_We>
+				<ns2:TypeOfAccount>Profit and loss account</ns2:TypeOfAccount>
+				<ns2:HeadOfficeLocation>Junagadh</ns2:HeadOfficeLocation>
+				<ns2:NumberOfBrances>0</ns2:NumberOfBrances>
+			</ns2:Point2>
+			<ns2:Point3>
+				<ns2:PointA>
+					<ns2:I_We>I</ns2:I_We>
+					<ns2:OCDI_Description>Please refer Schedule F - Notes to Accounts - Attached herewith.</ns2:OCDI_Description>
+				</ns2:PointA>
+				<ns2:PointB_A>
+					<ns2:I_We>I</ns2:I_We>
+					<ns2:My_Our>My</ns2:My_Our>
+				</ns2:PointB_A>
+				<ns2:PointB_B>
+					<ns2:My_Our1>My</ns2:My_Our1>
+					<ns2:My_Our2>My</ns2:My_Our2>
+				</ns2:PointB_B>
+				<ns2:PointB_C>
+					<ns2:My_Our1>My</ns2:My_Our1>
+					<ns2:My_Our2>My</ns2:My_Our2>
+					<ns2:Me_Us>Me</ns2:Me_Us>
+					<ns2:PointFirst>2017</ns2:PointFirst>
+					<ns2:PointSecond>
+						<ns2:typeOfAccount>Profit and loss account</ns2:typeOfAccount>
+						<ns2:PLSD>Profit</ns2:PLSD>
+					</ns2:PointSecond>
+				</ns2:PointB_C>
+			</ns2:Point3>
+			<ns2:Point5>
+				<ns2:My_Our1>My</ns2:My_Our1>
+				<ns2:My_Our2>My</ns2:My_Our2>
+				<ns2:Me_Us>Me</ns2:Me_Us>
+				
+			</ns2:Point5>
+		</ns2:Declaration>
+		<ns3:PartA>
+			<ns3:AssesseeName>
+				<ns3:FirstName>JIMESHKUMAR</ns3:FirstName>
+				<ns3:MiddleName>AJITBHAI</ns3:MiddleName>
+				<ns3:LastName>PARESH</ns3:LastName>
+				</ns3:AssesseeName>
+				<ns3:AddressDetail>
+						<ns3:AddrDetail1>M/S. MODERN HANDKERCHIEF WORKS</ns3:AddrDetail1>
+						<ns3:AddrDetail2>MANGNATH RAOD</ns3:AddrDetail2>
+						<ns3:CityOrTownOrDistrict>JUNAGADH</ns3:CityOrTownOrDistrict>
+						<ns3:StateCode>11</ns3:StateCode>
+						<ns3:PinCode>362001</ns3:PinCode>
+				</ns3:AddressDetail>
+			<ns3:PAN>ACRPP1652Q</ns3:PAN>
+			<ns3:IndirectTaxFlag>Y</ns3:IndirectTaxFlag>
+			<ns3:Form3cdIndirectTax>
+				<ns3:IndirectTaxType>SAT</ns3:IndirectTaxType>
+				<ns3:StateCode>11</ns3:StateCode>
+				
+				<ns3:RegNo>24120101129</ns3:RegNo>
+			</ns3:Form3cdIndirectTax>
+			<ns3:Status>1</ns3:Status>
+			<ns3:PartAStartDate>2016-04-01</ns3:PartAStartDate>
+			<ns3:PartAEndDate>2017-03-31</ns3:PartAEndDate>
+			<ns3:AssessmentYear>2017-18</ns3:AssessmentYear>
+			<ns3:Clause>
+				<ns3:ClauseNo>44ABa</ns3:ClauseNo>
+			</ns3:Clause>
+		</ns3:PartA>
+		
+		
+		<ns3:Form3cdFirmAopDetail>
+				<ns3:Form3cdFirmAopDetailPK>
+					<ns3:ChangeType>CURR_NATURE_BUSNS</ns3:ChangeType>
+					<ns3:FirmAopDesc>0203</ns3:FirmAopDesc>
+				</ns3:Form3cdFirmAopDetailPK>
+			</ns3:Form3cdFirmAopDetail>
+		
+		
+		<ns3:Form3cdBooksOfAccLst>
+				<ns3:Form3cdBooksOfAccLstPK>
+					<ns3:BooksOfAccType>LBEX</ns3:BooksOfAccType>
+					<ns3:BooksDetail>Cash Book, Bank book &amp; Ledgers</ns3:BooksDetail>
+				</ns3:Form3cdBooksOfAccLstPK>
+			</ns3:Form3cdBooksOfAccLst>
+		<ns3:Form3cdBooksOfAccLstAddress>
+				<ns3:Form3cdBooksOfAccLstPK>
+					<ns3:BooksOfAccType>BOAM</ns3:BooksOfAccType>
+					<ns3:BooksDetail>Cash Book, Bank book &amp; Ledgers</ns3:BooksDetail>
+					<ns3:AddressDetail>
+						<ns3:AddrDetail1>M/s. Modern Handkerchief Works</ns3:AddrDetail1>
+						<ns3:AddrDetail2>Mangnath Raod</ns3:AddrDetail2>
+						<ns3:CityOrTownOrDistrict>Junagadh</ns3:CityOrTownOrDistrict>
+						<ns3:StateCode>11</ns3:StateCode>
+						<ns3:PinCode>362001</ns3:PinCode>
+					</ns3:AddressDetail>
+				</ns3:Form3cdBooksOfAccLstPK>
+		</ns3:Form3cdBooksOfAccLstAddress>
+		
+		<ns3:Form3cdChngMethAccVal>
+				<ns3:Form3cdChngMethAccValPK>
+					<ns3:AccType>DEVIATION_ACC</ns3:AccType>
+					<ns3:Detail>Mercantile system</ns3:Detail>
+					<ns3:IncreaseProfits>0</ns3:IncreaseProfits>
+					<ns3:DecreaseProfits>0</ns3:DecreaseProfits>
+				</ns3:Form3cdChngMethAccValPK>
+			</ns3:Form3cdChngMethAccVal>
+		
+		
+		
+		 <ns3:Form3cdDisclVal>
+				<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSI</ns3:Icds>
+					<ns3:Disclosure>In preparing Financial Statements, the assessee is following accounting policies consistently, in accordance with generally accepting accounting principles and not in violation of any of the ICDS. These accounting policies are adopted in a manner so as to represent a true and fair view of the state of affairs and income of the business of the assessee.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSII</ns3:Icds>
+					<ns3:Disclosure>Inventories are valued at lower of cost or net realizable value (NRV). Cost of Inventories and NRV have been considered in accordance with ICDS-II.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSIII</ns3:Icds>
+					<ns3:Disclosure>This ICDS not applicable being the assessee is not having business of contruction contracts.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSIV</ns3:Icds>
+					<ns3:Disclosure>Revenue has been recognized as and when property in goods, with associated risk and reward of ownership transferred to the buyer. Thus, Revenue has been recognized in accordance with ICDS-IV.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSV</ns3:Icds>
+					<ns3:Disclosure>Tangible fixed assets have been accounted as WDV less depreciation.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSVII</ns3:Icds>
+					<ns3:Disclosure>This ICDS not applicable being the assessee is not having any government grants.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSIX</ns3:Icds>
+					<ns3:Disclosure>This ICDS not applicable.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+<ns3:Form3cdDisclValPK>
+					<ns3:AccType>DEVIATION_VALUE</ns3:AccType>
+					<ns3:Icds>ICDSX</ns3:Icds>
+					<ns3:Disclosure>This ICDS not applicable being the assessee is not having any provisions, contingent liabilities and contingent assets in financial statements.</ns3:Disclosure>
+				</ns3:Form3cdDisclValPK>
+		</ns3:Form3cdDisclVal>
+		<ns3:MethodValCS>
+            <ns3:ChangeType>At cost price or net realizable value whichever is lower</ns3:ChangeType>
+            
+        </ns3:MethodValCS>
+		
+		
+		
+		
+		
+		
+		
+		<ns3:Form3cdDeprAllw>
+			<ns3:DescBlockAssets>5</ns3:DescBlockAssets>
+			<ns3:RateOfDep>5</ns3:RateOfDep>
+			<ns3:OpeningWDV>5000</ns3:OpeningWDV>
+			<ns3:Additions>
+                <ns3:PurchaseOrSaleDate>2016-12-07</ns3:PurchaseOrSaleDate>
+                <ns3:DatePutToUse>2016-12-07</ns3:DatePutToUse>
+                <ns3:PurchaseOrSaleValue>5292</ns3:PurchaseOrSaleValue>
+                <ns3:Modvat>0</ns3:Modvat>
+                <ns3:ExchangeRateChange>0</ns3:ExchangeRateChange>
+                <ns3:subsidyGrant>0</ns3:subsidyGrant>
+                <ns3:TotalPurchaseValue>5292</ns3:TotalPurchaseValue>
+			</ns3:Additions>
+<ns3:Additions>
+                <ns3:PurchaseOrSaleDate>2016-12-08</ns3:PurchaseOrSaleDate>
+                <ns3:DatePutToUse>2016-12-08</ns3:DatePutToUse>
+                <ns3:PurchaseOrSaleValue>15500</ns3:PurchaseOrSaleValue>
+                <ns3:Modvat>0</ns3:Modvat>
+                <ns3:ExchangeRateChange>0</ns3:ExchangeRateChange>
+                <ns3:subsidyGrant>0</ns3:subsidyGrant>
+                <ns3:TotalPurchaseValue>15500</ns3:TotalPurchaseValue>
+			</ns3:Additions>
+			<ns3:TotalPurchase>20792</ns3:TotalPurchase>
+			<ns3:TotalModvat>0</ns3:TotalModvat>
+			<ns3:TotalChangeExchangeRate>0</ns3:TotalChangeExchangeRate>
+			<ns3:TotalSubsidyGrant>0</ns3:TotalSubsidyGrant>
+			<ns3:TotalPurchaseValue>20792</ns3:TotalPurchaseValue>
+			
+			<ns3:TotalDeduction>0</ns3:TotalDeduction>
+			<ns3:DepAllowable>9238</ns3:DepAllowable>
+			<ns3:WrittenDownVal>16554</ns3:WrittenDownVal>
+		</ns3:Form3cdDeprAllw>
+<ns3:Form3cdDeprAllw>
+			<ns3:DescBlockAssets>1</ns3:DescBlockAssets>
+			<ns3:RateOfDep>1</ns3:RateOfDep>
+			<ns3:OpeningWDV>61000</ns3:OpeningWDV>
+			
+			<ns3:TotalPurchase>0</ns3:TotalPurchase>
+			<ns3:TotalModvat>0</ns3:TotalModvat>
+			<ns3:TotalChangeExchangeRate>0</ns3:TotalChangeExchangeRate>
+			<ns3:TotalSubsidyGrant>0</ns3:TotalSubsidyGrant>
+			<ns3:TotalPurchaseValue>0</ns3:TotalPurchaseValue>
+			
+			<ns3:TotalDeduction>0</ns3:TotalDeduction>
+			<ns3:DepAllowable>9150</ns3:DepAllowable>
+			<ns3:WrittenDownVal>51850</ns3:WrittenDownVal>
+		</ns3:Form3cdDeprAllw>
+<ns3:Form3cdDeprAllw>
+			<ns3:DescBlockAssets>11</ns3:DescBlockAssets>
+			<ns3:RateOfDep>11</ns3:RateOfDep>
+			<ns3:OpeningWDV>3084</ns3:OpeningWDV>
+			<ns3:Additions>
+                <ns3:PurchaseOrSaleDate>2016-11-01</ns3:PurchaseOrSaleDate>
+                <ns3:DatePutToUse>2016-11-01</ns3:DatePutToUse>
+                <ns3:PurchaseOrSaleValue>5900</ns3:PurchaseOrSaleValue>
+                <ns3:Modvat>0</ns3:Modvat>
+                <ns3:ExchangeRateChange>0</ns3:ExchangeRateChange>
+                <ns3:subsidyGrant>0</ns3:subsidyGrant>
+                <ns3:TotalPurchaseValue>5900</ns3:TotalPurchaseValue>
+			</ns3:Additions>
+<ns3:Additions>
+                <ns3:PurchaseOrSaleDate>2016-11-30</ns3:PurchaseOrSaleDate>
+                <ns3:DatePutToUse>2016-11-30</ns3:DatePutToUse>
+                <ns3:PurchaseOrSaleValue>8100</ns3:PurchaseOrSaleValue>
+                <ns3:Modvat>0</ns3:Modvat>
+                <ns3:ExchangeRateChange>0</ns3:ExchangeRateChange>
+                <ns3:subsidyGrant>0</ns3:subsidyGrant>
+                <ns3:TotalPurchaseValue>8100</ns3:TotalPurchaseValue>
+			</ns3:Additions>
+			<ns3:TotalPurchase>14000</ns3:TotalPurchase>
+			<ns3:TotalModvat>0</ns3:TotalModvat>
+			<ns3:TotalChangeExchangeRate>0</ns3:TotalChangeExchangeRate>
+			<ns3:TotalSubsidyGrant>0</ns3:TotalSubsidyGrant>
+			<ns3:TotalPurchaseValue>14000</ns3:TotalPurchaseValue>
+			
+			<ns3:TotalDeduction>0</ns3:TotalDeduction>
+			<ns3:DepAllowable>1008</ns3:DepAllowable>
+			<ns3:WrittenDownVal>16076</ns3:WrittenDownVal>
+		</ns3:Form3cdDeprAllw>
+          
+		  
+		
+		<!-- Point21A onwards -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		 
+		
+		
+		
+		<ns3:Form3cdUnpaidStrySec43b>
+				<ns3:LiabilityType>PBDD</ns3:LiabilityType>
+				<ns3:Section>43Ba</ns3:Section>
+				<ns3:Description>VATPayable</ns3:Description>
+				<ns3:Amount>92659</ns3:Amount>
+			</ns3:Form3cdUnpaidStrySec43b>
+		
+		
+		
+		
+        
+        
+        
+        
+        
+        
+		
+		<ns3:Form3cdAmtSec269ssDetail>
+			<ns3:PanNoLender>DJPPP8166R</ns3:PanNoLender>
+			<ns3:LenderName>Charmiben J. Parekh</ns3:LenderName>
+			<ns3:LenderAddress>Junagadh</ns3:LenderAddress>
+			<ns3:AmtLoanDeposit>190000</ns3:AmtLoanDeposit>
+			<ns3:LoanDepChqDrftFlag>C</ns3:LoanDepChqDrftFlag>
+			<ns3:LoanDepSqrdPyFlag>N</ns3:LoanDepSqrdPyFlag>
+			<ns3:MaxAmtOsAccPy>190000</ns3:MaxAmtOsAccPy>
+			<ns3:LoanDepChqDrftType>Y</ns3:LoanDepChqDrftType>
+		</ns3:Form3cdAmtSec269ssDetail>
+<ns3:Form3cdAmtSec269ssDetail>
+			<ns3:PanNoLender>AKKPA3968K</ns3:PanNoLender>
+			<ns3:LenderName>Lata Manishbhai Ahuja</ns3:LenderName>
+			<ns3:LenderAddress>Junagadh</ns3:LenderAddress>
+			<ns3:AmtLoanDeposit>200000</ns3:AmtLoanDeposit>
+			<ns3:LoanDepChqDrftFlag>C</ns3:LoanDepChqDrftFlag>
+			<ns3:LoanDepSqrdPyFlag>N</ns3:LoanDepSqrdPyFlag>
+			<ns3:MaxAmtOsAccPy>200000</ns3:MaxAmtOsAccPy>
+			<ns3:LoanDepChqDrftType>Y</ns3:LoanDepChqDrftType>
+		</ns3:Form3cdAmtSec269ssDetail>
+<ns3:Form3cdAmtSec269ssDetail>
+			<ns3:PanNoLender>DJSPP2621G</ns3:PanNoLender>
+			<ns3:LenderName>Ashmitaben A. Parekh</ns3:LenderName>
+			<ns3:LenderAddress>Junagadh</ns3:LenderAddress>
+			<ns3:AmtLoanDeposit>140000</ns3:AmtLoanDeposit>
+			<ns3:LoanDepChqDrftFlag>C</ns3:LoanDepChqDrftFlag>
+			<ns3:LoanDepSqrdPyFlag>N</ns3:LoanDepSqrdPyFlag>
+			<ns3:MaxAmtOsAccPy>378930</ns3:MaxAmtOsAccPy>
+			<ns3:LoanDepChqDrftType>Y</ns3:LoanDepChqDrftType>
+		</ns3:Form3cdAmtSec269ssDetail>
+<ns3:Form3cdAmtSec269ssDetail>
+			
+			<ns3:LenderName>Krish Jimeshbhai Parekh</ns3:LenderName>
+			<ns3:LenderAddress>Junagadh</ns3:LenderAddress>
+			<ns3:AmtLoanDeposit>300000</ns3:AmtLoanDeposit>
+			<ns3:LoanDepChqDrftFlag>C</ns3:LoanDepChqDrftFlag>
+			<ns3:LoanDepSqrdPyFlag>N</ns3:LoanDepSqrdPyFlag>
+			<ns3:MaxAmtOsAccPy>300000</ns3:MaxAmtOsAccPy>
+			<ns3:LoanDepChqDrftType>Y</ns3:LoanDepChqDrftType>
+		</ns3:Form3cdAmtSec269ssDetail>
+		
+		<ns3:Form3cdAmtSec269tDetail>
+			<ns3:PayeePanNo>AQQPP6972L</ns3:PayeePanNo>
+			<ns3:PayeeName>Rajen A. Parekh</ns3:PayeeName>
+			<ns3:PayeeAddress>Junagadh</ns3:PayeeAddress>
+			<ns3:AmtRepayment>6000</ns3:AmtRepayment>
+			<ns3:MaxAmtOsAccPy>262648</ns3:MaxAmtOsAccPy>
+			<ns3:RepaymentChqDraftFlag>E</ns3:RepaymentChqDraftFlag>
+			
+		</ns3:Form3cdAmtSec269tDetail>
+		
+		
+		
+	<ns3:Form3cdSpecloss73>
+	<ns3:Form3cdSpec73Flag>N</ns3:Form3cdSpec73Flag>
+	
+	</ns3:Form3cdSpecloss73>
+	<ns3:Form3cdSpec73A>
+	<ns3:Form3cdSpec73AFlag>N</ns3:Form3cdSpec73AFlag>
+	
+	</ns3:Form3cdSpec73A>
+	<ns3:Form3cdSpecdeemdBus73>
+	<ns3:Form3cdSpecdeemdBusFlag>X</ns3:Form3cdSpecdeemdBusFlag>
+	
+	</ns3:Form3cdSpecdeemdBus73>
+	<ns3:Form3cdChapVIaChapIII>
+		<ns3:Section>80C</ns3:Section>
+		<ns3:Amt>73315</ns3:Amt>
+	</ns3:Form3cdChapVIaChapIII>
+<ns3:Form3cdChapVIaChapIII>
+		<ns3:Section>80TTA</ns3:Section>
+		<ns3:Amt>580</ns3:Amt>
+	</ns3:Form3cdChapVIaChapIII>
+	
+	
+	
+	
+		
+		
+		
+		
+		<ns3:CostAudit>
+			<ns3:CostAuditFlag>X</ns3:CostAuditFlag>
+			
+		</ns3:CostAudit>
+		<ns3:AuditExcise>
+			<ns3:AuditExciseFlag>X</ns3:AuditExciseFlag>
+			
+		</ns3:AuditExcise>
+		<ns3:AuditSec72>
+			<ns3:AuditSec72Flag>X</ns3:AuditSec72Flag>
+			
+		</ns3:AuditSec72>
+		
+		<ns3:Form3cdAccountingRatioCalculations>
+			<ns3:PrevYrProfTurnOvr>
+				<ns3:TotalTurnover>11786356</ns3:TotalTurnover>
+				<ns3:GrossprofitTurnover>6.29</ns3:GrossprofitTurnover>
+				<ns3:NetprofitTurnover1>4.42</ns3:NetprofitTurnover1>
+				<ns3:StockInTrade>33.31</ns3:StockInTrade>
+				
+				<ns3:GrosProfNumertr>741298</ns3:GrosProfNumertr>
+				<ns3:GrosProfDmntr>11786356</ns3:GrosProfDmntr>
+				<ns3:NetProfNumertr>520886</ns3:NetProfNumertr>
+				<ns3:NetProfDmntr>11786356</ns3:NetProfDmntr>
+				<ns3:StockTradeNmrtr>3925710</ns3:StockTradeNmrtr>
+				<ns3:StockTradeDmntr>11786356</ns3:StockTradeDmntr>
+				
+				
+			</ns3:PrevYrProfTurnOvr>
+			<ns3:PrecPrevYrProfTurnOvr>
+			    <ns3:TotalTurnover>0</ns3:TotalTurnover>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</ns3:PrecPrevYrProfTurnOvr>
+		</ns3:Form3cdAccountingRatioCalculations>
+		<ns3:Form3cdFlags>
+			<ns3:ChngMethodOfAcc>N</ns3:ChngMethodOfAcc>
+			
+			<ns3:ChngShareSec79>X</ns3:ChngShareSec79>
+			<ns3:ComplyXVIIB>N</ns3:ComplyXVIIB>
+			
+			<ns3:ChangeNaturBuisnes>N</ns3:ChangeNaturBuisnes>
+			<ns3:BookOfAcnt>N</ns3:BookOfAcnt>
+			<ns3:PrftLoassAcnt>N</ns3:PrftLoassAcnt>
+			<ns3:Sec145>N</ns3:Sec145>
+			<ns3:Sec145A>N</ns3:Sec145A>
+			<ns3:Sec40A3>Y</ns3:Sec40A3>
+			<ns3:Sec40A3A>Y</ns3:Sec40A3A>
+			<ns3:SalesTax>N</ns3:SalesTax>
+			<ns3:VATPY>N</ns3:VATPY>
+			<ns3:Section69D>N</ns3:Section69D>
+			<ns3:SectionDed>Y</ns3:SectionDed>
+			<ns3:TaxPrescTime>X</ns3:TaxPrescTime>
+			<ns3:Sec201_1A_206_C7>X</ns3:Sec201_1A_206_C7>
+			
+			
+			
+		</ns3:Form3cdFlags>
+		<OtherInformation1>
+			<FirstName>Hirenkumar</FirstName>
+			<MiddleName>Ramniklal</MiddleName>
+			<LastName>Padiya</LastName>
+			<AddrDetail1>317, Platinum Arcade</AddrDetail1>
+			<AddrDetail2>Jayshree Talkies Road</AddrDetail2>
+			<CityOrTownOrDistrict>Junagadh</CityOrTownOrDistrict>
+			<StateCode>11</StateCode>
+			<PinCode>362001</PinCode>
+			<Place>Junagadh</Place>
+			<Date>2017-10-07</Date>
+			<MembershipNo>138355</MembershipNo>
+			<FirmRegNum>135389W</FirmRegNum>
+		</OtherInformation1>
+	</ns2:F3CB>
+</ns2:FORM3CB>
